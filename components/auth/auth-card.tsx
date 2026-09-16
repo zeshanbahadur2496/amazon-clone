@@ -37,8 +37,11 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
         });
 
         if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.message ?? "Unable to create account.");
+          const data = (await response.json().catch(() => null)) as { message?: string } | null;
+          throw new Error(
+            data?.message ??
+              "Unable to create account. Check that DATABASE_URL is configured on Vercel and MongoDB allows connections."
+          );
         }
       }
 
@@ -50,7 +53,11 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
       });
 
       if (result?.error) {
-        throw new Error("Invalid email or password.");
+        throw new Error(
+          mode === "signup"
+            ? "Account was created but sign-in failed. Verify NEXTAUTH_SECRET and DATABASE_URL on Vercel, then seed the database."
+            : "Invalid email or password. On production, use seeded accounts or sign up after DATABASE_URL is configured."
+        );
       }
 
       toast.success(mode === "signup" ? "Account created" : "Welcome back");
