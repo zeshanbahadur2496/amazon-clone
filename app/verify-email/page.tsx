@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const email = searchParams.get("email");
@@ -29,14 +29,29 @@ export default function VerifyEmailPage() {
   }, [token, email]);
 
   return (
+    <div className="amazon-card">
+      <h1 className="text-2xl font-bold">Email verification</h1>
+      <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">{message}</p>
+      <Link href="/dashboard/profile" className="mt-6 inline-block text-amazon-teal underline">
+        Back to profile
+      </Link>
+    </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
     <div className="mx-auto max-w-md px-4 py-16 text-center">
-      <div className="amazon-card">
-        <h1 className="text-2xl font-bold">Email verification</h1>
-        <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">{message}</p>
-        <Link href="/dashboard/profile" className="mt-6 inline-block text-amazon-teal underline">
-          Back to profile
-        </Link>
-      </div>
+      <Suspense
+        fallback={
+          <div className="amazon-card">
+            <h1 className="text-2xl font-bold">Email verification</h1>
+            <p className="mt-4 text-sm text-slate-600 dark:text-slate-300">Loading...</p>
+          </div>
+        }
+      >
+        <VerifyEmailContent />
+      </Suspense>
     </div>
   );
 }
