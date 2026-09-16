@@ -15,6 +15,5 @@ export const prisma =
     log: process.env.NODE_ENV === "development" ? ["warn"] : ["error"]
   });
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+// Reuse one client per serverless instance (dev + production) to avoid slow reconnects.
+globalForPrisma.prisma = prisma;

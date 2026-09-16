@@ -2,7 +2,7 @@ import { AmazonHomeGrid } from "@/components/home/amazon-home-grid";
 import { HeroCarousel } from "@/components/home/hero-carousel";
 import { getAllProducts } from "@/lib/products";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export default async function HomePage() {
   const products = await getAllProducts();

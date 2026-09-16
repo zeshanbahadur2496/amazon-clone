@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 import { products as staticProducts } from "@/lib/data";
-import { logDbFallback } from "@/lib/db-fallback";
+import { queryDb } from "@/lib/db-query";
 import { prisma } from "@/lib/prisma";
 import { serializeProduct } from "@/lib/serialize-product";
 import type { Product, SearchParams } from "@/types";
@@ -156,121 +156,135 @@ function paginate(items: Product[], page: number, perPage: number): ProductPage 
   };
 }
 
-/** Full catalog, DB-backed with a static fallback if the database is unreachable. */
-export async function getAllProducts(): Promise<Product[]> {
-  try {
-    const items = await prisma.product.findMany({ orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }] });
-    return items.map(serializeProduct);
-  } catch {
-    logDbFallback("getAllProducts");
-    return staticProducts;
-  }
-}
-
-export async function getFeaturedProducts(): Promise<Product[]> {
-  try {
-    const items = await prisma.product.findMany({
-      where: { isFeatured: true },
-      orderBy: { createdAt: "desc" }
-    });
-    return items.map(serializeProduct);
-  } catch {
-    logDbFallback("getFeaturedProducts");
-    return staticProducts.filter((product) => product.isFeatured);
-  }
-}
-
-export async function getProductBySlug(slug: string): Promise<Product | null> {
-  try {
-    const product = await prisma.product.findUnique({ where: { slug } });
-    if (product) return serializeProduct(product);
-  } catch {
-    logDbFallback("getProductBySlug");
-  }
-
+function findStaticBySlug(slug: string) {
   return staticProducts.find((product) => product.slug === slug) ?? null;
 }
 
-export async function getProductById(id: string): Promise<Product | null> {
-  try {
-    const product = await prisma.product.findUnique({ where: { id } });
-    if (product) return serializeProduct(product);
-  } catch {
-    logDbFallback("getProductById");
-  }
-
+function findStaticById(id: string) {
   return staticProducts.find((product) => product.id === id) ?? null;
 }
 
+/** Full catalog, DB-backed with a static fallback if the database is unreachable. */
+export async function getAllProducts(): Promise<Product[]> {
+  return queryDb(
+    "getAllProducts",
+    async () => {
+      const items = await prisma.product.findMany({ orderBy: [{ isFeatured: "desc" }, { createdAt: "desc" }] });
+      return items.map(serializeProduct);
+    },
+    () => staticProducts
+  );
+}
+
+export async function getFeaturedProducts(): Promise<Product[]> {
+  return queryDb(
+    "getFeaturedProducts",
+    async () => {
+      const items = await prisma.product.findMany({
+        where: { isFeatured: true },
+        orderBy: { createdAt: "desc" }
+      });
+      return items.map(serializeProduct);
+    },
+    () => staticProducts.filter((product) => product.isFeatured)
+  );
+}
+
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  return queryDb(
+    "getProductBySlug",
+    async () => {
+      const product = await prisma.product.findUnique({ where: { slug } });
+      return product ? serializeProduct(product) : findStaticBySlug(slug);
+    },
+    () => findStaticBySlug(slug)
+  );
+}
+
+export async function getProductById(id: string): Promise<Product | null> {
+  return queryDb(
+    "getProductById",
+    async () => {
+      const product = await prisma.product.findUnique({ where: { id } });
+      return product ? serializeProduct(product) : findStaticById(id);
+    },
+    () => findStaticById(id)
+  );
+}
+
 export async function getRelatedProducts(product: Product, limit = 5): Promise<Product[]> {
-  try {
-    const items = await prisma.product.findMany({
-      where: { category: product.category, id: { not: product.id } },
-      orderBy: { createdAt: "desc" },
-      take: limit
-    });
-    return items.map(serializeProduct);
-  } catch {
-    logDbFallback("getRelatedProducts");
-    return staticProducts.filter((item) => item.category === product.category && item.id !== product.id).slice(0, limit);
-  }
+  return queryDb(
+    "getRelatedProducts",
+    async () => {
+      const items = await prisma.product.findMany({
+        where: { category: product.category, id: { not: product.id } },
+        orderBy: { createdAt: "desc" },
+        take: limit
+      });
+      return items.map(serializeProduct);
+    },
+    () => staticProducts.filter((item) => item.category === product.category && item.id !== product.id).slice(0, limit)
+  );
 }
 
 export async function getProductsByBrand(product: Product, limit = 4): Promise<Product[]> {
-  try {
-    const items = await prisma.product.findMany({
-      where: { brand: product.brand, id: { not: product.id } },
-      orderBy: { createdAt: "desc" },
-      take: limit
-    });
-    return items.map(serializeProduct);
-  } catch {
-    logDbFallback("getProductsByBrand");
-    return staticProducts.filter((item) => item.brand === product.brand && item.id !== product.id).slice(0, limit);
-  }
+  return queryDb(
+    "getProductsByBrand",
+    async () => {
+      const items = await prisma.product.findMany({
+        where: { brand: product.brand, id: { not: product.id } },
+        orderBy: { createdAt: "desc" },
+        take: limit
+      });
+      return items.map(serializeProduct);
+    },
+    () => staticProducts.filter((item) => item.brand === product.brand && item.id !== product.id).slice(0, limit)
+  );
 }
 
 export async function getOtherProducts(product: Product, limit = 4): Promise<Product[]> {
-  try {
-    const items = await prisma.product.findMany({
-      where: { id: { not: product.id } },
-      orderBy: { createdAt: "desc" },
-      take: limit
-    });
-    return items.map(serializeProduct);
-  } catch {
-    logDbFallback("getOtherProducts");
-    return staticProducts.filter((item) => item.id !== product.id).slice(0, limit);
-  }
+  return queryDb(
+    "getOtherProducts",
+    async () => {
+      const items = await prisma.product.findMany({
+        where: { id: { not: product.id } },
+        orderBy: { createdAt: "desc" },
+        take: limit
+      });
+      return items.map(serializeProduct);
+    },
+    () => staticProducts.filter((item) => item.id !== product.id).slice(0, limit)
+  );
 }
 
 /** Filtered, sorted, paginated product search shared by the search page and /api/products. */
 export async function queryProducts(params: SearchParams, perPage = 8): Promise<ProductPage> {
   const page = Math.max(1, Number(params.page ?? 1) || 1);
 
-  try {
-    const where = buildWhere(params);
-    const orderBy = buildOrderBy(params.sort);
+  return queryDb(
+    "queryProducts",
+    async () => {
+      const where = buildWhere(params);
+      const orderBy = buildOrderBy(params.sort);
 
-    const [items, total] = await Promise.all([
-      prisma.product.findMany({
-        where,
-        orderBy,
-        skip: (page - 1) * perPage,
-        take: perPage
-      }),
-      prisma.product.count({ where })
-    ]);
+      const [items, total] = await Promise.all([
+        prisma.product.findMany({
+          where,
+          orderBy,
+          skip: (page - 1) * perPage,
+          take: perPage
+        }),
+        prisma.product.count({ where })
+      ]);
 
-    return {
-      items: items.map(serializeProduct),
-      total,
-      page,
-      perPage,
-      totalPages: Math.max(1, Math.ceil(total / perPage))
-    };
-  } catch {
-    logDbFallback("queryProducts");
-    return paginate(searchStaticProducts(params), page, perPage);
-  }
+      return {
+        items: items.map(serializeProduct),
+        total,
+        page,
+        perPage,
+        totalPages: Math.max(1, Math.ceil(total / perPage))
+      };
+    },
+    () => paginate(searchStaticProducts(params), page, perPage)
+  );
 }
