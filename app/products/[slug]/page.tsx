@@ -18,7 +18,7 @@ import { getOtherProducts, getProductBySlug, getProductsByBrand, getRelatedProdu
 import { getProductReviews } from "@/lib/reviews";
 import { MarketPrice } from "@/components/ui/market-price";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
