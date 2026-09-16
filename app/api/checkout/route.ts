@@ -64,7 +64,7 @@ export async function POST(request: Request) {
     marketCode,
     isPrime,
     deliveryMethod,
-    couponCode: payload.couponCode
+    couponCode: payload.couponCode ?? undefined
   });
 
   const { subtotal, shipping, tax, couponDiscount, total } = totals;

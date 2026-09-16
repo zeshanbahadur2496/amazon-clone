@@ -130,7 +130,7 @@ export function CheckoutForm() {
       });
       const data = (await response.json().catch(() => null)) as { message?: string; url?: string } | null;
       if (!response.ok) throw new Error(data?.message ?? "Checkout failed");
-      if (data.url) window.location.href = data.url;
+      if (data?.url) window.location.href = data.url;
       else window.location.href = "/checkout/success";
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Checkout failed");
