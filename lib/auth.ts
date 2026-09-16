@@ -14,6 +14,7 @@ const credentialsSchema = z.object({
 });
 
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt"
@@ -39,34 +40,39 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        const parsed = credentialsSchema.safeParse(credentials);
+        try {
+          const parsed = credentialsSchema.safeParse(credentials);
 
-        if (!parsed.success) {
+          if (!parsed.success) {
+            return null;
+          }
+
+          const user = await prisma.user.findUnique({
+            where: { email: parsed.data.email }
+          });
+
+          if (!user?.password) {
+            return null;
+          }
+
+          const isValid = await bcrypt.compare(parsed.data.password, user.password);
+
+          if (!isValid) {
+            return null;
+          }
+
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            role: user.role,
+            isPrime: user.isPrime && (!user.primeExpiresAt || user.primeExpiresAt > new Date())
+          };
+        } catch (error) {
+          console.error("CREDENTIALS_AUTH_ERROR", error);
           return null;
         }
-
-        const user = await prisma.user.findUnique({
-          where: { email: parsed.data.email }
-        });
-
-        if (!user?.password) {
-          return null;
-        }
-
-        const isValid = await bcrypt.compare(parsed.data.password, user.password);
-
-        if (!isValid) {
-          return null;
-        }
-
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          image: user.image,
-          role: user.role,
-          isPrime: user.isPrime && (!user.primeExpiresAt || user.primeExpiresAt > new Date())
-        };
       }
     })
   ],
@@ -79,16 +85,20 @@ export const authOptions: NextAuthOptions = {
       }
 
       if (token.email) {
-        const dbUser = await prisma.user.findUnique({
-          where: { email: token.email },
-          select: { id: true, role: true, isPrime: true, primeExpiresAt: true }
-        });
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: token.email },
+            select: { id: true, role: true, isPrime: true, primeExpiresAt: true }
+          });
 
-        if (dbUser) {
-          token.id = dbUser.id;
-          token.role = dbUser.role ?? "USER";
-          token.isPrime =
-            dbUser.isPrime && (!dbUser.primeExpiresAt || dbUser.primeExpiresAt > new Date());
+          if (dbUser) {
+            token.id = dbUser.id;
+            token.role = dbUser.role ?? "USER";
+            token.isPrime =
+              dbUser.isPrime && (!dbUser.primeExpiresAt || dbUser.primeExpiresAt > new Date());
+          }
+        } catch (error) {
+          console.error("JWT_USER_LOOKUP_ERROR", error);
         }
       }
 
