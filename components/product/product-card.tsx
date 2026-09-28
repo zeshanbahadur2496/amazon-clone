@@ -45,7 +45,7 @@ export function ProductCard({ product, compact = false, sponsored = false }: Pro
   }
 
   return (
-    <article className="group relative flex h-full flex-col rounded border border-slate-200 bg-white p-2.5 transition hover:border-slate-300 hover:shadow-cardHover dark:border-white/10 dark:bg-slate-900 sm:p-3">
+    <article className="group relative flex h-full flex-col rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] p-3 transition duration-300 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-cardHover dark:hover:border-indigo-500/30 sm:p-4">
       {(sponsored || product.isSponsored) && (
         <p className="mb-1 text-[10px] text-slate-400">Sponsored</p>
       )}
@@ -59,7 +59,7 @@ export function ProductCard({ product, compact = false, sponsored = false }: Pro
           className="object-contain p-2 transition duration-300 group-hover:scale-[1.03]"
         />
         {product.discount > 0 && (
-          <span className="absolute left-0 top-0 rounded-br bg-amazon-red px-1.5 py-0.5 text-[11px] font-bold text-white">
+          <span className="absolute left-0 top-0 rounded-br-xl bg-gradient-to-r from-rose-500 to-pink-500 px-2 py-0.5 text-[11px] font-bold text-white">
             -{product.discount}%
           </span>
         )}
@@ -84,7 +84,7 @@ export function ProductCard({ product, compact = false, sponsored = false }: Pro
         <p className="text-[11px] uppercase tracking-wide text-slate-500">{product.brand}</p>
         <Link
           href={`/products/${product.slug}`}
-          className="mt-0.5 line-clamp-2 min-h-[2.5em] text-sm leading-snug text-slate-900 hover:text-amazon-orange hover:underline dark:text-white"
+          className="mt-0.5 line-clamp-2 min-h-[2.5em] text-sm leading-snug text-[color:var(--store-text)] hover:text-indigo-600 hover:underline dark:hover:text-indigo-300"
         >
           {product.title}
         </Link>
@@ -92,17 +92,17 @@ export function ProductCard({ product, compact = false, sponsored = false }: Pro
 
         <div className="mt-1.5">
           <div className="flex items-baseline gap-1.5">
-            <span className="text-lg font-bold text-slate-950 dark:text-white">{formatPrice(product.price)}</span>
+            <span className="text-lg font-bold text-indigo-600 dark:text-indigo-300">{formatPrice(product.price)}</span>
             {savings > 0 && <span className="text-xs text-slate-500 line-through">{formatPrice(product.mrp)}</span>}
           </div>
           <div className="mt-1 flex items-center gap-2">
             {product.isPrime && <PrimeBadge />}
-            {product.isFlashDeal && <span className="text-[11px] font-bold text-amazon-red">⚡ Deal</span>}
+            {product.isFlashDeal && <span className="text-[11px] font-bold text-rose-500">⚡ Deal</span>}
           </div>
-          <p className={cn("mt-1 text-xs", inStock ? "text-slate-600 dark:text-slate-300" : "text-amazon-red")}>
+          <p className={cn("mt-1 text-xs", inStock ? "text-[color:var(--store-text-muted)]" : "text-rose-500")}>
             {inStock ? (
               <>
-                <span className="text-amazon-green">FREE delivery</span> {deliveryDate}
+                <span className="text-emerald-600 dark:text-emerald-400">FREE delivery</span> {deliveryDate}
               </>
             ) : (
               "Currently unavailable"
@@ -114,7 +114,7 @@ export function ProductCard({ product, compact = false, sponsored = false }: Pro
           <div className="mt-2 flex items-center gap-1.5 pt-1">
             <Button
               onClick={addToCart}
-              className="h-8 flex-1 rounded-[4px] bg-[#FFD814] px-2 text-xs font-normal text-slate-950 shadow-sm hover:bg-[#F7CA00] dark:bg-[#FFD814] dark:hover:bg-[#F7CA00]"
+              className="h-9 flex-1 rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 px-2 text-xs font-semibold text-white shadow-sm hover:from-indigo-600 hover:to-cyan-600"
               disabled={!inStock || adding}
             >
               <ShoppingCart className="h-3.5 w-3.5" />
@@ -127,7 +127,7 @@ export function ProductCard({ product, compact = false, sponsored = false }: Pro
                 const ok = addCompare(product);
                 toast[ok ? "success" : "error"](ok ? "Added to compare" : "Compare list full (max 4)");
               }}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[4px] border border-slate-200 text-slate-500 hover:border-amazon-orange hover:text-amazon-orange dark:border-white/10"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[color:var(--store-border)] text-[color:var(--store-text-muted)] hover:border-indigo-300 hover:text-indigo-600"
               aria-label="Compare"
               title="Compare"
             >

@@ -52,8 +52,8 @@ export function CartView() {
   if (items.length === 0 && savedItems.length === 0) {
     return (
       <div className="amazon-section py-16 text-center">
-        <ShoppingBag className="mx-auto h-14 w-14 text-amazon-orange" />
-        <h1 className="mt-5 text-3xl font-bold">Your Amazon Cart is empty</h1>
+        <ShoppingBag className="mx-auto h-14 w-14 text-indigo-500" />
+        <h1 className="mt-5 text-3xl font-bold text-[color:var(--store-text)]">Your cart is empty</h1>
         <Link href="/search" className="amazon-btn-primary mt-6 inline-flex">
           Continue shopping
         </Link>
@@ -63,9 +63,9 @@ export function CartView() {
 
   return (
     <div className="mx-auto max-w-[1500px] grid gap-4 px-3 py-4 sm:px-4 lg:grid-cols-[1fr_320px]">
-      <section className="rounded border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-slate-900 sm:p-5">
+      <section className="rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] p-4 sm:p-5 shadow-soft">
         <div className="flex items-baseline justify-between border-b border-slate-200 pb-3 dark:border-white/10">
-          <h1 className="text-2xl font-medium text-slate-950 dark:text-white">Shopping Cart</h1>
+          <h1 className="text-2xl font-medium text-[color:var(--store-text)]">Shopping Cart</h1>
           <span className="hidden text-sm text-slate-500 sm:inline">Price</span>
         </div>
 
@@ -80,7 +80,7 @@ export function CartView() {
                   <Link href={`/products/${product.slug}`} className="amazon-link line-clamp-2 font-medium">
                     {product.title}
                   </Link>
-                  <p className="mt-1 text-xs text-amazon-green">In stock</p>
+                  <p className="mt-1 text-xs text-emerald-600 dark:text-emerald-400">In stock</p>
                   <div className="mt-3 flex flex-wrap items-center gap-3">
                     <div className="inline-flex h-8 items-center rounded border border-slate-300 dark:border-white/10">
                       <button type="button" onClick={() => updateQuantity(product.id, quantity - 1)} className="px-2.5 hover:bg-slate-50 dark:hover:bg-white/10" aria-label="Decrease">

@@ -1,39 +1,32 @@
-export const amazonTokens = {
+export const storeTokens = {
   colors: {
-    navy: "#131921",
-    blue: "#232f3e",
-    lightBlue: "#37475a",
-    gold: "#febd69",
-    orange: "#ff9900",
-    teal: "#007185",
-    green: "#067d62",
-    red: "#b12704",
-    pageBg: "#eaeded",
-    cardBg: "#ffffff",
-    textPrimary: "#0f1111",
-    textSecondary: "#565959",
-    border: "#d5d9d9"
+    primary: "#6366f1",
+    primaryHover: "#4f46e5",
+    accent: "#06b6d4",
+    deal: "#f43f5e",
+    success: "#10b981",
+    lightBg: "#f4f6fb",
+    darkBg: "#0b0f19",
+    surfaceLight: "#ffffff",
+    surfaceDark: "#151b28"
   },
   spacing: {
-    navHeight: "60px",
-    subNavHeight: "39px",
+    navHeight: "72px",
+    subNavHeight: "44px",
     pagePadding: "1rem",
-    cardPadding: "0.75rem",
-    sectionGap: "1.25rem"
+    cardPadding: "1rem",
+    sectionGap: "1.5rem"
   },
   typography: {
-    fontFamily: '"Amazon Ember", Arial, sans-serif',
-    productTitle: "text-sm leading-snug",
-    price: "text-xl font-normal",
+    fontFamily: "Inter, system-ui, sans-serif",
+    productTitle: "text-sm leading-snug font-medium",
+    price: "text-xl font-bold",
     mrp: "text-xs text-slate-500 line-through"
-  },
-  shadows: {
-    card: "0 2px 5px rgba(15,17,17,0.15)",
-    cardHover: "0 4px 12px rgba(15,17,17,0.2)",
-    dropdown: "0 4px 14px rgba(15,17,17,0.25)",
-    sticky: "0 2px 4px rgba(0,0,0,0.25)"
   }
 } as const;
+
+/** @deprecated use storeTokens */
+export const amazonTokens = storeTokens;
 
 export const trendingSearches = [
   "iphone 16",

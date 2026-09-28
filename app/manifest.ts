@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "An educational full-stack Amazon.pk-inspired e-commerce clone.",
     start_url: "/",
     display: "standalone",
-    background_color: "#eaeded",
+    background_color: "#f4f6fb",
     theme_color: "#131921",
     icons: [
       {

@@ -74,26 +74,29 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mx-auto w-full max-w-md rounded border border-slate-200 bg-white p-6 shadow-card dark:border-white/10 dark:bg-slate-900"
+      className="mx-auto w-full max-w-md rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] p-8 shadow-glow"
     >
       <div className="mb-6 text-center">
-        <Link href="/" className="inline-flex items-end text-3xl font-black text-slate-950 dark:text-white">
-          amazon<span className="text-amazon-orange">.in</span>
+        <Link href="/" className="inline-flex items-center gap-1 text-3xl font-black tracking-tight">
+          <span className="text-gradient">Nova</span>
+          <span className="text-[color:var(--store-text)]">Mart</span>
         </Link>
-        <h1 className="mt-5 text-2xl font-black tracking-normal text-slate-950 dark:text-white">
-          {mode === "signup" ? "Create account" : "Sign in"}
+        <h1 className="mt-5 text-2xl font-bold tracking-tight text-[color:var(--store-text)]">
+          {mode === "signup" ? "Create account" : "Welcome back"}
         </h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-          {mode === "signup" ? "Start shopping with fast checkout and saved addresses." : "Access orders, wishlist, cart sync, and admin tools."}
+        <p className="mt-2 text-sm text-[color:var(--store-text-muted)]">
+          {mode === "signup"
+            ? "Start shopping with fast checkout and saved addresses."
+            : "Access orders, wishlist, cart sync, and your account."}
         </p>
       </div>
 
       <div className="grid gap-2">
-        <Button type="button" variant="outline" className="w-full" onClick={() => signIn("google", { callbackUrl })}>
+        <Button type="button" variant="outline" className="w-full rounded-xl" onClick={() => signIn("google", { callbackUrl })}>
           <Chrome className="h-4 w-4" />
           Continue with Google
         </Button>
-        <Button type="button" variant="outline" className="w-full" onClick={() => signIn("github", { callbackUrl })}>
+        <Button type="button" variant="outline" className="w-full rounded-xl" onClick={() => signIn("github", { callbackUrl })}>
           <Github className="h-4 w-4" />
           Continue with GitHub
         </Button>
@@ -101,41 +104,41 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
 
       {mode === "login" && (
         <p className="mt-3 text-center text-sm">
-          <Link href="/forgot-password" className="text-amazon-teal hover:underline">
+          <Link href="/forgot-password" className="store-link font-medium">
             Forgot password?
           </Link>
         </p>
       )}
 
-      <div className="my-5 flex items-center gap-3 text-xs font-semibold uppercase text-slate-400">
-        <span className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+      <div className="my-5 flex items-center gap-3 text-xs font-semibold uppercase text-[color:var(--store-text-muted)]">
+        <span className="h-px flex-1 bg-[color:var(--store-border)]" />
         or
-        <span className="h-px flex-1 bg-slate-200 dark:bg-white/10" />
+        <span className="h-px flex-1 bg-[color:var(--store-border)]" />
       </div>
 
       <form className="space-y-4" onSubmit={onSubmit}>
         {mode === "signup" && (
           <label className="block">
-            <span className="mb-1 block text-sm font-bold text-slate-700 dark:text-slate-200">Your name</span>
-            <span className="flex items-center gap-2 rounded-md border border-slate-200 px-3 focus-within:border-amazon-orange dark:border-white/10">
-              <UserRound className="h-4 w-4 text-slate-400" />
+            <span className="mb-1 block text-sm font-semibold text-[color:var(--store-text)]">Your name</span>
+            <span className="flex items-center gap-2 rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20">
+              <UserRound className="h-4 w-4 text-[color:var(--store-text-muted)]" />
               <input name="name" required minLength={2} className="h-11 flex-1 bg-transparent outline-none" />
             </span>
           </label>
         )}
 
         <label className="block">
-          <span className="mb-1 block text-sm font-bold text-slate-700 dark:text-slate-200">Email</span>
-          <span className="flex items-center gap-2 rounded-md border border-slate-200 px-3 focus-within:border-amazon-orange dark:border-white/10">
-            <Mail className="h-4 w-4 text-slate-400" />
+          <span className="mb-1 block text-sm font-semibold text-[color:var(--store-text)]">Email</span>
+          <span className="flex items-center gap-2 rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20">
+            <Mail className="h-4 w-4 text-[color:var(--store-text-muted)]" />
             <input name="email" type="email" required className="h-11 flex-1 bg-transparent outline-none" />
           </span>
         </label>
 
         <label className="block">
-          <span className="mb-1 block text-sm font-bold text-slate-700 dark:text-slate-200">Password</span>
-          <span className="flex items-center gap-2 rounded-md border border-slate-200 px-3 focus-within:border-amazon-orange dark:border-white/10">
-            <Lock className="h-4 w-4 text-slate-400" />
+          <span className="mb-1 block text-sm font-semibold text-[color:var(--store-text)]">Password</span>
+          <span className="flex items-center gap-2 rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20">
+            <Lock className="h-4 w-4 text-[color:var(--store-text-muted)]" />
             <input
               name="password"
               type={showPassword ? "text" : "password"}
@@ -144,20 +147,23 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
               className="h-11 flex-1 bg-transparent outline-none"
             />
             <button type="button" onClick={() => setShowPassword((value) => !value)} aria-label="Toggle password visibility">
-              {showPassword ? <EyeOff className="h-4 w-4 text-slate-400" /> : <Eye className="h-4 w-4 text-slate-400" />}
+              {showPassword ? <EyeOff className="h-4 w-4 text-[color:var(--store-text-muted)]" /> : <Eye className="h-4 w-4 text-[color:var(--store-text-muted)]" />}
             </button>
           </span>
         </label>
 
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full rounded-xl" disabled={loading}>
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           {mode === "signup" ? "Create account" : "Sign in"}
         </Button>
       </form>
 
-      <p className="mt-5 text-center text-sm text-slate-600 dark:text-slate-300">
-        {mode === "signup" ? "Already have an account?" : "New to Amazon?"}{" "}
-        <Link href={`${mode === "signup" ? "/login" : "/signup"}?callbackUrl=${encodeURIComponent(callbackUrl)}`} className="font-bold text-amazon-teal hover:text-amazon-orange">
+      <p className="mt-5 text-center text-sm text-[color:var(--store-text-muted)]">
+        {mode === "signup" ? "Already have an account?" : "New to NovaMart?"}{" "}
+        <Link
+          href={`${mode === "signup" ? "/login" : "/signup"}?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+          className="store-link font-semibold"
+        >
           {mode === "signup" ? "Sign in" : "Create your account"}
         </Link>
       </p>

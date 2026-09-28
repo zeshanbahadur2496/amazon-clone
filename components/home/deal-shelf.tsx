@@ -11,7 +11,7 @@ export function DealShelf({ products, title = "Lightning deals" }: { products: P
 
   return (
     <section className="mx-auto max-w-[1500px] px-3 sm:px-4">
-      <div className="rounded border border-slate-200 bg-white p-4 shadow-card dark:border-white/10 dark:bg-slate-900 sm:p-5">
+      <div className="rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] p-4 shadow-soft sm:p-5">
         <SectionHeading title={title} subtitle="Deep, time-limited discounts refreshed regularly." href="/search?sort=discount" />
         <div className="flex gap-3 overflow-x-auto pb-1 no-scrollbar">
           {products
@@ -22,17 +22,17 @@ export function DealShelf({ products, title = "Lightning deals" }: { products: P
               <Link
                 href={`/products/${product.slug}`}
                 key={product.id}
-                className="group w-40 shrink-0 overflow-hidden rounded border border-slate-200 bg-white transition hover:border-amazon-orange/60 dark:border-white/10 dark:bg-slate-900 sm:w-48"
+                className="group w-40 shrink-0 overflow-hidden rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-cardHover sm:w-48"
               >
-                <div className="relative aspect-square bg-slate-50">
+                <div className="relative aspect-square">
                   <Image src={product.images[0]} alt={product.title} fill sizes="200px" className="object-contain p-3 transition group-hover:scale-105" />
                 </div>
                 <div className="p-3">
                   <Badge tone="deal">{product.discount}% off</Badge>
-                  <h3 className="mt-2 line-clamp-2 min-h-9 text-sm font-medium text-slate-950 dark:text-white">{product.title}</h3>
+                  <h3 className="mt-2 line-clamp-2 min-h-9 text-sm font-medium text-[color:var(--store-text)]">{product.title}</h3>
                   <div className="mt-1.5 flex items-baseline gap-1.5">
-                    <MarketPrice value={product.price} className="text-base font-bold" />
-                    <MarketPrice value={product.mrp} className="text-xs text-slate-500 line-through" />
+                    <MarketPrice value={product.price} className="text-base font-bold text-indigo-600 dark:text-indigo-300" />
+                    <MarketPrice value={product.mrp} className="text-xs text-[color:var(--store-text-muted)] line-through" />
                   </div>
                 </div>
               </Link>

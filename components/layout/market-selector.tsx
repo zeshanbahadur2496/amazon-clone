@@ -17,27 +17,27 @@ export function MarketSelector({ compact = false }: { compact?: boolean }) {
     setOpen(null);
   }
 
+  const dropdownClass =
+    "absolute bottom-full z-50 mb-2 max-h-64 overflow-y-auto rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] py-1 shadow-dropdown";
+
+  const itemClass = (active: boolean) =>
+    `block w-full px-4 py-2 text-left text-sm text-[color:var(--store-text)] hover:bg-indigo-50 dark:hover:bg-indigo-500/10 ${active ? "font-semibold text-indigo-600 dark:text-indigo-300" : ""}`;
+
+  const triggerClass =
+    "flex items-center gap-1.5 rounded-xl border border-[color:var(--store-border)] px-3 py-1.5 text-sm text-[color:var(--store-text-muted)] transition hover:border-indigo-300 hover:text-indigo-600 dark:hover:border-indigo-500/40 dark:hover:text-indigo-300";
+
   if (compact) {
     return (
       <div className="relative">
-        <button
-          type="button"
-          onClick={() => setOpen(open === "country" ? null : "country")}
-          className="flex items-center gap-1.5 rounded border border-slate-500 px-3 py-1.5 text-sm hover:border-white"
-        >
+        <button type="button" onClick={() => setOpen(open === "country" ? null : "country")} className={triggerClass}>
           <MapPin className="h-4 w-4" />
           {config.flag} {config.name}
           <ChevronDown className="h-3 w-3" />
         </button>
         {open === "country" && (
-          <div className="absolute bottom-full left-0 z-50 mb-2 max-h-64 w-56 overflow-y-auto rounded border border-slate-600 bg-[#232f3e] py-1 shadow-lg">
+          <div className={`${dropdownClass} left-0 w-56`}>
             {MARKET_CODES.map((code) => (
-              <button
-                key={code}
-                type="button"
-                onClick={() => selectMarket(code)}
-                className={`block w-full px-4 py-2 text-left text-sm hover:bg-white/10 ${code === market ? "font-bold text-amazon-gold" : ""}`}
-              >
+              <button key={code} type="button" onClick={() => selectMarket(code)} className={itemClass(code === market)}>
                 {MARKETS[code].flag} {MARKETS[code].name}
               </button>
             ))}
@@ -49,32 +49,20 @@ export function MarketSelector({ compact = false }: { compact?: boolean }) {
 
   return (
     <>
-      <button
-        type="button"
-        className="flex items-center gap-1.5 rounded border border-slate-500 px-3 py-1.5 text-sm hover:border-white"
-      >
+      <button type="button" className={triggerClass}>
         <Globe className="h-4 w-4" />
         English
       </button>
       <div className="relative">
-        <button
-          type="button"
-          onClick={() => setOpen(open === "currency" ? null : "currency")}
-          className="flex items-center gap-1.5 rounded border border-slate-500 px-3 py-1.5 text-sm hover:border-white"
-        >
+        <button type="button" onClick={() => setOpen(open === "currency" ? null : "currency")} className={triggerClass}>
           <span className="font-bold">{config.currency === "INR" ? "₹" : config.currency === "USD" ? "$" : config.currency === "GBP" ? "£" : config.currency === "EUR" ? "€" : "¤"}</span>
           {config.currencyLabel}
           <ChevronDown className="h-3 w-3" />
         </button>
         {open === "currency" && (
-          <div className="absolute bottom-full left-0 z-50 mb-2 max-h-64 w-64 overflow-y-auto rounded border border-slate-600 bg-[#232f3e] py-1 shadow-lg">
+          <div className={`${dropdownClass} left-0 w-64`}>
             {MARKET_CODES.map((code) => (
-              <button
-                key={code}
-                type="button"
-                onClick={() => selectMarket(code)}
-                className={`block w-full px-4 py-2 text-left text-sm hover:bg-white/10 ${code === market ? "font-bold text-amazon-gold" : ""}`}
-              >
+              <button key={code} type="button" onClick={() => selectMarket(code)} className={itemClass(code === market)}>
                 {MARKETS[code].currencyLabel}
               </button>
             ))}
@@ -82,24 +70,15 @@ export function MarketSelector({ compact = false }: { compact?: boolean }) {
         )}
       </div>
       <div className="relative">
-        <button
-          type="button"
-          onClick={() => setOpen(open === "country" ? null : "country")}
-          className="flex items-center gap-1.5 rounded border border-slate-500 px-3 py-1.5 text-sm hover:border-white"
-        >
+        <button type="button" onClick={() => setOpen(open === "country" ? null : "country")} className={triggerClass}>
           <MapPin className="h-4 w-4" />
           {config.flag} {config.name}
           <ChevronDown className="h-3 w-3" />
         </button>
         {open === "country" && (
-          <div className="absolute bottom-full right-0 z-50 mb-2 max-h-64 w-56 overflow-y-auto rounded border border-slate-600 bg-[#232f3e] py-1 shadow-lg">
+          <div className={`${dropdownClass} right-0 w-56`}>
             {MARKET_CODES.map((code) => (
-              <button
-                key={code}
-                type="button"
-                onClick={() => selectMarket(code)}
-                className={`block w-full px-4 py-2 text-left text-sm hover:bg-white/10 ${code === market ? "font-bold text-amazon-gold" : ""}`}
-              >
+              <button key={code} type="button" onClick={() => selectMarket(code)} className={itemClass(code === market)}>
                 {MARKETS[code].flag} {MARKETS[code].name}
               </button>
             ))}

@@ -20,7 +20,7 @@ function CardRow({
   return (
     <div className="mx-auto grid max-w-[1500px] grid-cols-1 gap-[15px] px-[15px] sm:grid-cols-2 xl:grid-cols-4">
       {cards.map((card, index) => (
-        <div key={index} className="min-h-[420px] overflow-hidden shadow-card">
+        <div key={index} className="min-h-[420px] overflow-hidden rounded-2xl shadow-soft">
           {card.type === "grid" ? <CategoryGridCard {...card.data} /> : <CategorySingleCard {...card.data} />}
         </div>
       ))}
@@ -60,7 +60,7 @@ export function AmazonHomeGrid({ products }: { products: Product[] }) {
       <CardRow cards={row1} />
 
       <div className="mx-auto max-w-[1500px] px-[15px]">
-        <div className="overflow-hidden shadow-card">
+        <div className="overflow-hidden rounded-2xl shadow-soft">
           <ProductStrip {...strips[0]} />
         </div>
       </div>
@@ -68,7 +68,7 @@ export function AmazonHomeGrid({ products }: { products: Product[] }) {
       <CardRow cards={row2} />
 
       <div className="mx-auto max-w-[1500px] px-[15px]">
-        <div className="overflow-hidden shadow-card">
+        <div className="overflow-hidden rounded-2xl shadow-soft">
           <PromoBanner
             title="Watch free on Prime Video"
             subtitle="Movies, TV shows, and live sports included with Prime"
@@ -81,7 +81,7 @@ export function AmazonHomeGrid({ products }: { products: Product[] }) {
       </div>
 
       <div className="mx-auto max-w-[1500px] px-[15px]">
-        <div className="overflow-hidden shadow-card">
+        <div className="overflow-hidden rounded-2xl shadow-soft">
           <ProductStrip {...strips[1]} />
         </div>
       </div>
@@ -89,13 +89,13 @@ export function AmazonHomeGrid({ products }: { products: Product[] }) {
       <CardRow cards={row3} />
 
       <div className="mx-auto max-w-[1500px] px-[15px]">
-        <div className="overflow-hidden shadow-card">
+        <div className="overflow-hidden rounded-2xl shadow-soft">
           <ProductStrip {...strips[2]} />
         </div>
       </div>
 
       <div className="mx-auto max-w-[1500px] px-[15px]">
-        <div className="overflow-hidden shadow-card">
+        <div className="overflow-hidden rounded-2xl shadow-soft">
           <PromoBanner
             title="No-cost EMI on top brands"
             subtitle="Easy monthly payments on electronics, appliances, and more"
@@ -107,19 +107,19 @@ export function AmazonHomeGrid({ products }: { products: Product[] }) {
       </div>
 
       <div className="mx-auto max-w-[1500px] px-[15px]">
-        <div className="overflow-hidden shadow-card">
+        <div className="overflow-hidden rounded-2xl shadow-soft">
           <ProductStrip {...strips[3]} />
         </div>
       </div>
 
       <div className="mx-auto max-w-[1500px] px-[15px]">
-        <div className="overflow-hidden shadow-card">
+        <div className="overflow-hidden rounded-2xl shadow-soft">
           <InspiredRow products={inspired} />
         </div>
       </div>
 
       <div className="mx-auto max-w-[1500px] px-[15px]">
-        <div className="overflow-hidden shadow-card">
+        <div className="overflow-hidden rounded-2xl shadow-soft">
           <ProductStrip {...strips[4]} />
         </div>
       </div>

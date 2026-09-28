@@ -24,17 +24,15 @@ export function ProductActions({ product, compact = false }: { product: Product;
   const maxQuantity = Math.max(1, Math.min(product.stock, 10));
 
   return (
-    <div className={compact ? "" : "rounded border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-slate-900"}>
+    <div className={compact ? "" : "rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] p-5 shadow-soft"}>
       {!compact && (
         <>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-slate-950 dark:text-white">
-              {formatPrice(product.price)}
-            </span>
+            <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-300">{formatPrice(product.price)}</span>
           </div>
-          {product.discount > 0 && <p className="mt-0.5 text-sm text-amazon-red">({product.discount}% off)</p>}
+          {product.discount > 0 && <p className="mt-0.5 text-sm text-rose-500">({product.discount}% off)</p>}
 
-          <p className={`mt-3 text-sm font-bold ${product.stock > 0 ? "text-amazon-green" : "text-amazon-red"}`}>
+          <p className={`mt-3 text-sm font-semibold ${product.stock > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-500"}`}>
             {product.stock > 0 ? "In stock" : "Out of stock"}
           </p>
         </>
@@ -42,11 +40,11 @@ export function ProductActions({ product, compact = false }: { product: Product;
 
       {product.stock > 0 && (
         <label className="mt-3 block">
-          <span className="text-sm text-slate-600 dark:text-slate-300">Quantity:</span>
+          <span className="text-sm text-[color:var(--store-text-muted)]">Quantity:</span>
           <select
             value={quantity}
             onChange={(event) => setQuantity(Number(event.target.value))}
-            className="ml-2 h-8 rounded border border-slate-300 bg-slate-50 px-2 text-sm outline-none focus:border-amazon-orange dark:border-white/10 dark:bg-slate-800"
+            className="ml-2 h-8 rounded-lg border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-2 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20"
           >
             {Array.from({ length: maxQuantity }).map((_, index) => (
               <option key={index} value={index + 1}>
@@ -62,7 +60,7 @@ export function ProductActions({ product, compact = false }: { product: Product;
           type="button"
           onClick={addToCart}
           disabled={product.stock <= 0}
-          className="flex h-10 items-center justify-center gap-2 rounded-full bg-[#FFD814] text-sm font-bold text-slate-950 shadow-sm transition hover:bg-[#F7CA00] disabled:pointer-events-none disabled:opacity-50"
+          className="store-btn-primary flex h-11 items-center justify-center gap-2 rounded-xl disabled:pointer-events-none disabled:opacity-50"
         >
           <ShoppingCart className="h-4 w-4" />
           Add to Cart
@@ -73,14 +71,14 @@ export function ProductActions({ product, compact = false }: { product: Product;
             toggleWishlist(product);
             toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
           }}
-          className="flex h-10 items-center justify-center gap-2 rounded-full border border-slate-300 text-sm font-bold text-slate-800 transition hover:bg-slate-50 dark:border-white/20 dark:text-slate-100 dark:hover:bg-white/5"
+          className="store-btn-secondary flex h-11 items-center justify-center gap-2 rounded-xl"
         >
-          <Heart className={`h-4 w-4 ${isWishlisted ? "fill-red-500 text-red-500" : ""}`} />
+          <Heart className={`h-4 w-4 ${isWishlisted ? "fill-rose-500 text-rose-500" : ""}`} />
           {isWishlisted ? "In wishlist" : "Add to Wish List"}
         </button>
       </div>
 
-      <p className="mt-4 flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300">
+      <p className="mt-4 flex items-center gap-1.5 text-xs text-[color:var(--store-text-muted)]">
         <Lock className="h-3.5 w-3.5" />
         Secure transaction
       </p>

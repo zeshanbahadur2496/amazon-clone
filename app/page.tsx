@@ -8,9 +8,9 @@ export default async function HomePage() {
   const products = await getAllProducts();
 
   return (
-    <div className="bg-[#eaeded] dark:bg-slate-950">
+    <div className="bg-[color:var(--store-bg)]">
       <HeroCarousel />
-      <div className="relative z-10 -mt-[120px] sm:-mt-[140px] lg:-mt-[180px]">
+      <div className="relative z-10 mt-4 sm:mt-5">
         <AmazonHomeGrid products={products} />
       </div>
     </div>

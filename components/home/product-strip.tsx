@@ -23,9 +23,9 @@ export function ProductStrip({ title, products, href = "/search" }: ProductStrip
   }
 
   return (
-    <section className="relative bg-white dark:bg-slate-900">
+    <section className="relative rounded-2xl bg-[color:var(--store-surface)]">
       <div className="flex items-baseline justify-between px-5 pt-5">
-        <Link href={href} className="text-[21px] font-bold text-[#0f1111] hover:text-amazon-orange dark:text-white">
+        <Link href={href} className="text-xl font-bold text-[color:var(--store-text)] transition hover:text-indigo-600 dark:hover:text-indigo-300">
           {title}
         </Link>
       </div>
@@ -34,26 +34,22 @@ export function ProductStrip({ title, products, href = "/search" }: ProductStrip
         <button
           type="button"
           onClick={() => scroll(-1)}
-          className="absolute left-1 top-1/2 z-10 hidden h-16 w-11 -translate-y-1/2 items-center justify-center rounded bg-white/95 shadow-md hover:bg-white lg:flex dark:bg-slate-800/95"
+          className="absolute left-1 top-1/2 z-10 hidden h-14 w-10 -translate-y-1/2 items-center justify-center rounded-xl bg-[color:var(--store-surface)]/95 shadow-md backdrop-blur hover:shadow-cardHover lg:flex"
           aria-label="Scroll left"
         >
-          <ChevronLeft className="h-7 w-7 text-[#0f1111] dark:text-white" />
+          <ChevronLeft className="h-6 w-6 text-[color:var(--store-text)]" />
         </button>
 
         <div ref={scrollerRef} className="flex gap-0 overflow-x-auto no-scrollbar scroll-smooth">
           {products.map((product) => (
-            <Link
-              key={product.id}
-              href={`/products/${product.slug}`}
-              className="group w-[200px] shrink-0 px-2 sm:w-[220px]"
-            >
-              <div className="relative aspect-square overflow-hidden bg-[#f7fafa]">
+            <Link key={product.id} href={`/products/${product.slug}`} className="group w-[200px] shrink-0 px-2 sm:w-[220px]">
+              <div className="relative aspect-square overflow-hidden rounded-xl bg-[color:var(--store-surface-muted)]">
                 <Image
                   src={product.images[0]}
                   alt={product.title}
                   fill
                   sizes="220px"
-                  className="object-contain p-3 transition group-hover:scale-[1.02]"
+                  className="object-contain p-3 transition duration-300 group-hover:scale-105"
                 />
               </div>
             </Link>
@@ -63,10 +59,10 @@ export function ProductStrip({ title, products, href = "/search" }: ProductStrip
         <button
           type="button"
           onClick={() => scroll(1)}
-          className="absolute right-1 top-1/2 z-10 hidden h-16 w-11 -translate-y-1/2 items-center justify-center rounded bg-white/95 shadow-md hover:bg-white lg:flex dark:bg-slate-800/95"
+          className="absolute right-1 top-1/2 z-10 hidden h-14 w-10 -translate-y-1/2 items-center justify-center rounded-xl bg-[color:var(--store-surface)]/95 shadow-md backdrop-blur hover:shadow-cardHover lg:flex"
           aria-label="Scroll right"
         >
-          <ChevronRight className="h-7 w-7 text-[#0f1111] dark:text-white" />
+          <ChevronRight className="h-6 w-6 text-[color:var(--store-text)]" />
         </button>
       </div>
     </section>

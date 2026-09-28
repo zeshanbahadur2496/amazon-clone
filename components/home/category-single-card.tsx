@@ -3,23 +3,23 @@ import Link from "next/link";
 
 import type { HomeSingleCard } from "@/lib/home-layout";
 
-export function CategorySingleCard({ title, href, cta, image }: HomeSingleCard) {
+export function CategorySingleCard({ title, href, image }: HomeSingleCard) {
   return (
-    <article className="flex h-full flex-col bg-white p-5 dark:bg-slate-900">
-      <h2 className="text-[21px] font-bold leading-tight text-[#0f1111] dark:text-white">{title}</h2>
-      <Link href={href} className="group mt-4 flex flex-1 flex-col">
-        <div className="relative min-h-[220px] flex-1 overflow-hidden bg-[#f7fafa] lg:min-h-[260px]">
+    <article className="flex h-full flex-col rounded-2xl bg-[color:var(--store-surface)] p-5">
+      <h2 className="text-xl font-bold leading-tight text-[color:var(--store-text)]">{title}</h2>
+      <Link href={href} className="group mt-4 block flex-1">
+        <div className="relative h-full min-h-[280px] overflow-hidden rounded-xl bg-[color:var(--store-surface-muted)]">
           <Image
             src={image}
             alt={title}
             fill
-            sizes="(max-width: 768px) 100vw, 300px"
-            className="object-cover transition group-hover:opacity-90"
+            sizes="(max-width: 768px) 100vw, 360px"
+            className="object-cover transition duration-300 group-hover:scale-105"
           />
         </div>
       </Link>
-      <Link href={href} className="mt-4 inline-block text-[13px] text-amazon-teal hover:text-amazon-orange hover:underline">
-        {cta}
+      <Link href={href} className="store-link mt-4 inline-block text-[13px] font-medium">
+        Shop now
       </Link>
     </article>
   );

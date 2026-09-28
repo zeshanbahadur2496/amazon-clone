@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import { Suspense } from "react";
 
 import { Footer } from "@/components/layout/footer";
@@ -7,19 +8,24 @@ import { AiShoppingAssistant } from "@/components/ai/shopping-assistant";
 import { AppProviders } from "@/components/providers/app-providers";
 import "./globals.css";
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap"
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
-    default: "Amazon Full-Stack Marketplace",
-    template: "%s | Amazon Clone"
+    default: "NovaMart — Modern Shopping",
+    template: "%s | NovaMart"
   },
   description:
-    "An educational full-stack Amazon.in-inspired e-commerce clone built with Next.js, TypeScript, Tailwind CSS, MongoDB, Prisma, NextAuth, and Stripe. Not affiliated with Amazon.com, Inc.",
-  keywords: ["Amazon clone", "Next.js ecommerce", "MongoDB Prisma", "Stripe checkout", "NextAuth", "portfolio project"],
-  authors: [{ name: "Tanmay Tyagi" }],
+    "A modern full-stack marketplace with global pricing, fast checkout, order tracking, and a polished light/dark shopping experience.",
+  keywords: ["ecommerce", "Next.js marketplace", "MongoDB Prisma", "Stripe checkout", "NextAuth"],
   openGraph: {
-    title: "Amazon Clone",
-    description: "An educational full-stack Amazon.in-inspired marketplace with cart, checkout, dashboard, admin panel, and a responsive UI.",
+    title: "NovaMart",
+    description: "Modern marketplace with cart, checkout, dashboard, admin panel, and responsive UI.",
     type: "website",
     images: ["/hero/1.jpg"]
   }
@@ -28,12 +34,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="flex min-h-screen flex-col">
+      <body className={`${inter.variable} flex min-h-screen flex-col font-sans antialiased`}>
         <AppProviders>
           <Suspense fallback={null}>
             <Navbar />
           </Suspense>
-          <main className="flex-1 bg-amazon-page dark:bg-slate-950">{children}</main>
+          <main className="flex-1 bg-store-bg text-[color:var(--store-text)]">{children}</main>
           <Footer />
           <AiShoppingAssistant />
         </AppProviders>

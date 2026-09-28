@@ -93,7 +93,7 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
 
   return (
     <div ref={containerRef} className={cn("relative flex-1", className)}>
-      <form onSubmit={onSubmit} className="flex h-10 overflow-hidden rounded-[4px] border-2 border-transparent bg-white focus-within:border-amazon-orange">
+      <form onSubmit={onSubmit} className="flex h-11 overflow-hidden rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] shadow-sm focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20">
         {!compact && (
           <>
             <label className="sr-only" htmlFor="search-category">
@@ -125,8 +125,8 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
-          placeholder={`Search Amazon${config.domainSuffix}`}
-          className={cn("min-w-0 flex-1 text-slate-950 outline-none", compact ? "px-3 text-sm" : "px-3 text-sm md:text-[15px]")}
+          placeholder="Search products, brands, and categories"
+          className={cn("min-w-0 flex-1 bg-transparent text-[color:var(--store-text)] outline-none placeholder:text-[color:var(--store-text-muted)]", compact ? "px-3 text-sm" : "px-3 text-sm md:text-[15px]")}
           aria-label="Search products"
           aria-expanded={!!showPanel}
           aria-controls="search-suggestions"
@@ -167,7 +167,7 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
         <button
           type="submit"
           className={cn(
-            "flex items-center justify-center bg-amazon-gold text-slate-950 hover:bg-[#f5a742]",
+            "flex items-center justify-center bg-gradient-to-r from-indigo-500 to-cyan-500 text-white transition hover:from-indigo-600 hover:to-cyan-600",
             compact ? "w-11" : "w-12"
           )}
           aria-label="Search"
@@ -180,7 +180,7 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
         <div
           id="search-suggestions"
           role="listbox"
-          className="absolute left-0 right-0 top-full z-[60] mt-1 max-h-[70vh] overflow-y-auto rounded-md border border-slate-200 bg-white text-slate-900 shadow-dropdown dark:border-white/10 dark:bg-slate-900 dark:text-white"
+          className="absolute left-0 right-0 top-full z-[60] mt-2 max-h-[70vh] overflow-y-auto rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] text-[color:var(--store-text)] shadow-dropdown"
         >
           {!query && history.length > 0 && (
             <div className="border-b border-slate-100 p-2 dark:border-white/10">
@@ -245,7 +245,7 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
               <span>
                 {term.split(new RegExp(`(${query})`, "gi")).map((part, i) =>
                   part.toLowerCase() === query.toLowerCase() ? (
-                    <strong key={i} className="font-bold text-amazon-orange">
+                    <strong key={i} className="font-bold text-indigo-600 dark:text-indigo-300">
                       {part}
                     </strong>
                   ) : (

@@ -18,7 +18,7 @@ export default async function ProfilePage() {
       <DashboardShell title="Profile">
         <div className="rounded-lg border border-slate-200 bg-white p-6 text-center shadow-sm dark:border-white/10 dark:bg-slate-900">
           <h2 className="text-2xl font-black tracking-normal">Sign in to manage profile</h2>
-          <Link href="/login?callbackUrl=/dashboard/profile" className="mt-5 inline-flex h-11 items-center rounded-md bg-amazon-gold px-5 text-sm font-bold text-slate-950">
+          <Link href="/login?callbackUrl=/dashboard/profile" className="store-btn-primary mt-5 inline-flex h-11 items-center px-5">
             Sign in
           </Link>
         </div>

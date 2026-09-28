@@ -7,7 +7,7 @@ import {
   Menu,
   Moon,
   Package,
-  ShoppingCart,
+  ShoppingBag,
   Sun,
   X
 } from "lucide-react";
@@ -38,44 +38,51 @@ export function Navbar() {
   useEffect(() => setMounted(true), []);
 
   return (
-    <header className="sticky top-0 z-50 bg-amazon-navy text-white shadow-sticky transition-shadow">
-      <div className="mx-auto flex max-w-[1500px] items-center gap-2 px-2 py-2.5 sm:gap-3 sm:px-3">
+    <header className="sticky top-0 z-50 store-glass shadow-sticky">
+      <div className="mx-auto flex max-w-[1500px] items-center gap-2 px-3 py-3 sm:gap-3 sm:px-4">
         <button
           type="button"
           onClick={() => setMenuOpen((v) => !v)}
-          className="rounded-sm p-2 hover:outline hover:outline-1 hover:outline-white/80 lg:hidden"
+          className="rounded-xl p-2 text-[color:var(--store-text-muted)] transition hover:bg-indigo-500/10 hover:text-indigo-600 lg:hidden"
           aria-label="Open menu"
         >
           {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
 
-        <Link href="/" className="flex shrink-0 items-end border border-transparent px-1 py-1 hover:border-white" aria-label={`Amazon${config.domainSuffix} home`}>
-          <span className="text-2xl font-extrabold tracking-tight sm:text-[28px]">Amazon</span>
-          <span className="mb-1 text-xs font-bold text-amazon-gold sm:text-sm">{config.domainSuffix}</span>
+        <Link href="/" className="group flex shrink-0 items-center gap-2 rounded-xl px-1 py-1" aria-label="NovaMart home">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-sm font-black text-white shadow-md">
+            N
+          </span>
+          <span className="hidden sm:block">
+            <span className="block text-lg font-bold leading-none text-[color:var(--store-text)]">NovaMart</span>
+            <span className="text-[11px] font-medium text-[color:var(--store-text-muted)]">{config.name}</span>
+          </span>
         </Link>
 
         <div className="relative hidden lg:block">
           <button
             type="button"
             onClick={() => setLocationOpen((v) => !v)}
-            className="flex max-w-[140px] flex-col rounded-sm border border-transparent px-1 py-0.5 text-left hover:border-white"
+            className="flex max-w-[150px] flex-col rounded-xl border border-transparent px-2 py-1 text-left transition hover:border-[color:var(--store-border)] hover:bg-indigo-500/5"
           >
-            <span className="flex items-center gap-0.5 text-[11px] text-slate-300">
+            <span className="flex items-center gap-1 text-[11px] text-[color:var(--store-text-muted)]">
               <MapPin className="h-3 w-3" />
               Deliver to
             </span>
-            <span className="truncate text-sm font-bold">{city} {pincode}</span>
+            <span className="truncate text-sm font-semibold text-[color:var(--store-text)]">
+              {city} {pincode}
+            </span>
           </button>
           {locationOpen && (
-            <div className="absolute left-0 top-full z-50 mt-1 w-64 rounded-md border border-slate-200 bg-white p-4 text-slate-900 shadow-dropdown">
+            <div className="absolute left-0 top-full z-50 mt-2 w-64 rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] p-4 text-[color:var(--store-text)] shadow-dropdown">
               <p className="text-sm font-bold">Choose your location</p>
-              <p className="mt-1 text-xs text-slate-600">Delivery options may vary</p>
+              <p className="mt-1 text-xs text-[color:var(--store-text-muted)]">Delivery options may vary</p>
               <div className="mt-3 space-y-1">
                 {config.locations.map((loc) => (
                   <button
                     key={`${loc.city}-${loc.postalCode}`}
                     type="button"
-                    className="block w-full rounded px-2 py-2 text-left text-sm hover:bg-amber-50"
+                    className="block w-full rounded-xl px-3 py-2 text-left text-sm transition hover:bg-indigo-500/10"
                     onClick={() => {
                       setLocation(loc.postalCode, loc.city, market);
                       setLocationOpen(false);
@@ -91,25 +98,25 @@ export function Navbar() {
 
         <SearchBar className="hidden md:flex" initialQuery={searchParams.get("q") ?? ""} />
 
-        <div className="ml-auto flex items-center gap-0.5 sm:gap-1">
+        <div className="ml-auto flex items-center gap-1 sm:gap-2">
           <div className="relative hidden lg:block">
             <button
               type="button"
               onClick={() => setMarketOpen((v) => !v)}
-              className="flex items-center gap-0.5 rounded-sm border border-transparent px-2 py-1 text-xs hover:border-white"
+              className="store-pill flex items-center gap-1"
               aria-label="Change country"
             >
               <Globe className="h-4 w-4" />
-              <span className="font-bold">{config.flag} {config.code}</span>
+              <span className="font-semibold">{config.flag} {config.code}</span>
               <ChevronDown className="h-3 w-3" />
             </button>
             {marketOpen && (
-              <div className="absolute right-0 top-full z-50 mt-1 max-h-72 w-52 overflow-y-auto rounded-md border border-slate-200 bg-white py-1 text-slate-900 shadow-dropdown">
+              <div className="absolute right-0 top-full z-50 mt-2 max-h-72 w-52 overflow-y-auto rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] py-1 shadow-dropdown">
                 {MARKET_CODES.map((code: MarketCode) => (
                   <button
                     key={code}
                     type="button"
-                    className={`block w-full px-3 py-2 text-left text-sm hover:bg-amber-50 ${code === market ? "font-bold text-amazon-orange" : ""}`}
+                    className={`block w-full px-3 py-2 text-left text-sm transition hover:bg-indigo-500/10 ${code === market ? "font-bold text-indigo-600 dark:text-indigo-300" : ""}`}
                     onClick={() => {
                       setMarket(code);
                       setMarketOpen(false);
@@ -125,103 +132,98 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="hidden rounded-sm border border-transparent p-2 hover:border-white sm:inline-flex"
+            className="rounded-xl p-2 text-[color:var(--store-text-muted)] transition hover:bg-indigo-500/10 hover:text-indigo-600"
             aria-label="Toggle theme"
           >
             {mounted && theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </button>
 
           <div className="group relative hidden lg:block">
-            <Link href={session ? "/dashboard/profile" : "/login"} className="block rounded-sm border border-transparent px-1 py-0.5 hover:border-white">
-              <span className="text-[11px] text-slate-300">Hello, {session?.user?.name?.split(" ")[0] ?? "sign in"}</span>
-              <span className="flex items-center gap-0.5 text-sm font-bold">
-                Account & Lists
+            <Link
+              href={session ? "/dashboard/profile" : "/login"}
+              className="block rounded-xl border border-transparent px-2 py-1 transition hover:border-[color:var(--store-border)] hover:bg-indigo-500/5"
+            >
+              <span className="text-[11px] text-[color:var(--store-text-muted)]">
+                Hello, {session?.user?.name?.split(" ")[0] ?? "guest"}
+              </span>
+              <span className="flex items-center gap-0.5 text-sm font-semibold text-[color:var(--store-text)]">
+                Account
                 <ChevronDown className="h-3 w-3" />
               </span>
             </Link>
-            <div className="invisible absolute right-0 top-full w-52 translate-y-1 rounded-md border border-slate-200 bg-white p-2 text-slate-900 opacity-0 shadow-dropdown transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 dark:border-white/10 dark:bg-slate-900 dark:text-white">
+            <div className="invisible absolute right-0 top-full w-52 translate-y-2 rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] p-2 opacity-0 shadow-dropdown transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
               {session ? (
                 <>
-                  <Link className="block rounded px-3 py-2 text-sm hover:bg-amber-50 dark:hover:bg-white/10" href="/dashboard/profile">Your Account</Link>
-                  <Link className="block rounded px-3 py-2 text-sm hover:bg-amber-50 dark:hover:bg-white/10" href="/dashboard/orders">Your Orders</Link>
-                  <Link className="block rounded px-3 py-2 text-sm hover:bg-amber-50 dark:hover:bg-white/10" href="/dashboard/wishlist">Wishlist</Link>
-                  <Link className="block rounded px-3 py-2 text-sm hover:bg-amber-50 dark:hover:bg-white/10" href="/prime">Prime</Link>
+                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-indigo-500/10" href="/dashboard/profile">Your Account</Link>
+                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-indigo-500/10" href="/dashboard/orders">Your Orders</Link>
+                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-indigo-500/10" href="/dashboard/wishlist">Wishlist</Link>
+                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-indigo-500/10" href="/prime">Prime</Link>
                   {session.user.role === "ADMIN" && (
-                    <Link className="block rounded px-3 py-2 text-sm hover:bg-amber-50 dark:hover:bg-white/10" href="/admin">Admin</Link>
+                    <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-indigo-500/10" href="/admin">Admin</Link>
                   )}
-                  <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="block w-full rounded px-3 py-2 text-left text-sm hover:bg-amber-50 dark:hover:bg-white/10">
+                  <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="block w-full rounded-xl px-3 py-2 text-left text-sm hover:bg-indigo-500/10">
                     Sign Out
                   </button>
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="block rounded bg-amazon-orange px-3 py-2 text-center text-sm font-bold text-slate-950 hover:bg-[#f5a742]">Sign in</Link>
-                  <p className="mt-2 px-3 text-xs text-slate-600 dark:text-slate-400">New customer? <Link href="/signup" className="text-amazon-teal hover:underline">Start here</Link></p>
+                  <Link href="/login" className="store-btn-primary block w-full text-center">Sign in</Link>
+                  <p className="mt-2 px-3 text-xs text-[color:var(--store-text-muted)]">
+                    New here? <Link href="/signup" className="store-link">Create account</Link>
+                  </p>
                 </>
               )}
             </div>
           </div>
 
-          <Link href="/dashboard/orders" className="hidden rounded-sm border border-transparent px-1 py-0.5 hover:border-white lg:block">
-            <span className="text-[11px] text-slate-300">Returns</span>
-            <span className="block text-sm font-bold">& Orders</span>
-          </Link>
-
-          <Link href="/prime" className="hidden rounded-sm border border-transparent px-1 py-0.5 hover:border-white xl:block">
-            <span className="text-sm font-bold text-amazon-gold">prime</span>
-          </Link>
-
           <Link
             href="/cart"
-            className="relative flex items-end gap-1 rounded-sm border border-transparent px-1 py-0.5 hover:border-white"
+            className="relative flex items-center gap-2 rounded-xl border border-transparent px-2 py-1 transition hover:border-[color:var(--store-border)] hover:bg-indigo-500/5"
             aria-label={`Cart, ${cartCount} items`}
           >
             <div className="relative">
-              <ShoppingCart className="h-8 w-8" />
-              <span className="absolute -top-1 left-4 min-w-[18px] rounded-full bg-amazon-orange px-1 text-center text-xs font-bold text-slate-950">
+              <ShoppingBag className="h-6 w-6 text-[color:var(--store-text)]" />
+              <span className="absolute -right-2 -top-2 min-w-[18px] rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 px-1 text-center text-[10px] font-bold text-white">
                 {cartCount}
               </span>
             </div>
-            <span className="hidden pb-1 text-sm font-bold sm:inline">Cart</span>
+            <span className="hidden pb-0.5 text-sm font-semibold text-[color:var(--store-text)] sm:inline">Cart</span>
           </Link>
         </div>
       </div>
 
-      <div className="px-2 pb-2 md:hidden">
+      <div className="px-3 pb-3 md:hidden">
         <SearchBar compact initialQuery={searchParams.get("q") ?? ""} />
       </div>
 
-      <div className="hidden bg-amazon-blue lg:block">
-        <nav className="mx-auto flex max-w-[1500px] items-center gap-0 px-2 text-[13px]">
-          <Link href="/search" className="flex shrink-0 items-center gap-1 rounded-sm border border-transparent px-2 py-1.5 font-bold hover:border-white">
+      <div className="hidden border-t border-[color:var(--store-border)] bg-[color:var(--store-nav)] lg:block">
+        <nav className="mx-auto flex max-w-[1500px] items-center gap-1 overflow-x-auto px-3 py-2 text-[13px] no-scrollbar">
+          <Link href="/search" className="store-pill flex shrink-0 items-center gap-1 font-semibold">
             <Menu className="h-4 w-4" />
-            All
+            Browse
           </Link>
-          {categories.slice(0, 9).map((category) => (
+          {categories.slice(0, 8).map((category) => (
             <Link
               key={category}
               href={`/search?category=${encodeURIComponent(category)}`}
-              className="shrink-0 rounded-sm border border-transparent px-2 py-1.5 hover:border-white"
+              className="store-pill shrink-0"
             >
               {category}
             </Link>
           ))}
-          <Link href="/search?deal=flash" className="shrink-0 rounded-sm border border-transparent px-2 py-1.5 text-amazon-gold hover:border-white">
-            Today&apos;s Deals
+          <Link href="/search?deal=flash" className="store-pill shrink-0 font-semibold text-rose-500">
+            Deals
           </Link>
-          <Link href="/prime" className="shrink-0 rounded-sm border border-transparent px-2 py-1.5 hover:border-white">
+          <Link href="/prime" className="store-pill shrink-0 font-semibold text-indigo-600 dark:text-indigo-300">
             Prime
-          </Link>
-          <Link href="/compare" className="shrink-0 rounded-sm border border-transparent px-2 py-1.5 hover:border-white">
-            Compare
           </Link>
         </nav>
       </div>
 
       {menuOpen && (
-        <div className="border-t border-white/10 bg-amazon-navy p-4 lg:hidden">
+        <div className="border-t border-[color:var(--store-border)] bg-[color:var(--store-surface)] p-4 lg:hidden">
           <div className="mb-3 space-y-2 text-sm">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 text-[color:var(--store-text-muted)]">
               <MapPin className="h-4 w-4" />
               Deliver to {city} {pincode}
             </div>
@@ -231,7 +233,7 @@ export function Navbar() {
                   key={code}
                   type="button"
                   onClick={() => setMarket(code)}
-                  className={`rounded px-2 py-1 text-xs ${code === market ? "bg-amazon-orange font-bold text-slate-950" : "bg-white/10"}`}
+                  className={`rounded-full px-3 py-1 text-xs ${code === market ? "bg-gradient-to-r from-indigo-500 to-cyan-500 font-bold text-white" : "bg-indigo-500/10"}`}
                 >
                   {MARKETS[code].flag} {MARKETS[code].code}
                 </button>
@@ -239,30 +241,22 @@ export function Navbar() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 text-sm">
-            <Link href="/search" className="rounded bg-white/10 px-3 py-2" onClick={() => setMenuOpen(false)}>All categories</Link>
-            <Link href="/search?deal=flash" className="rounded bg-white/10 px-3 py-2" onClick={() => setMenuOpen(false)}>Deals</Link>
+            <Link href="/search" className="rounded-xl bg-indigo-500/10 px-3 py-2" onClick={() => setMenuOpen(false)}>Browse</Link>
+            <Link href="/search?deal=flash" className="rounded-xl bg-indigo-500/10 px-3 py-2" onClick={() => setMenuOpen(false)}>Deals</Link>
             {session ? (
               <>
-                <Link href="/dashboard/profile" className="rounded bg-white/10 px-3 py-2">Account</Link>
-                <Link href="/dashboard/orders" className="rounded bg-white/10 px-3 py-2">Orders</Link>
-                <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="rounded bg-white/10 px-3 py-2 text-left">
+                <Link href="/dashboard/profile" className="rounded-xl bg-indigo-500/10 px-3 py-2">Account</Link>
+                <Link href="/dashboard/orders" className="rounded-xl bg-indigo-500/10 px-3 py-2">Orders</Link>
+                <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="rounded-xl bg-indigo-500/10 px-3 py-2 text-left">
                   Sign out
                 </button>
               </>
             ) : (
-              <Link href="/login" className="col-span-2 rounded bg-amazon-orange px-3 py-2 text-center font-bold text-slate-950">
+              <Link href="/login" className="col-span-2 store-btn-primary text-center" onClick={() => setMenuOpen(false)}>
                 Sign in
               </Link>
             )}
-            <button
-              type="button"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="flex items-center gap-2 rounded bg-white/10 px-3 py-2"
-            >
-              {mounted && theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              Theme
-            </button>
-            <Link href="/prime" className="flex items-center gap-2 rounded bg-white/10 px-3 py-2 text-amazon-gold">
+            <Link href="/prime" className="flex items-center gap-2 rounded-xl bg-indigo-500/10 px-3 py-2 text-indigo-600">
               <Package className="h-4 w-4" />
               Prime
             </Link>

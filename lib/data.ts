@@ -27,27 +27,33 @@ export const categories = [
 
 export const heroSlides = [
   {
-    eyebrow: "Home & kitchen",
-    title: "Starting low prices on everyday essentials",
-    description: "Home, kitchen, and more — deals refreshed daily.",
+    eyebrow: "NovaMart Deals",
+    title: "Smart savings on everyday essentials",
+    description: "Home, kitchen, and lifestyle picks with fast delivery and member-only prices.",
     image: "/hero/1.jpg",
-    cta: "Shop now"
+    cta: "Shop home deals",
+    href: "/search?category=Home%20%26%20Kitchen",
+    accent: "from-indigo-600 via-violet-600 to-indigo-800"
   },
   {
-    eyebrow: "Electronics",
-    title: "Upgrade your tech for less",
-    description: "Phones, laptops, headphones, and smart devices from top brands.",
+    eyebrow: "Tech Week",
+    title: "Upgrade your setup for less",
+    description: "Phones, laptops, audio, and smart devices from top brands — up to 40% off.",
     image: "/hero/2.jpg",
-    cta: "See deals"
+    cta: "Browse electronics",
+    href: "/search?category=Electronics",
+    accent: "from-cyan-600 via-teal-600 to-indigo-700"
   },
   {
-    eyebrow: "Fashion & more",
-    title: "Styles for every season",
-    description: "Fashion, footwear, and accessories with fast delivery.",
+    eyebrow: "New Season",
+    title: "Fresh styles, delivered fast",
+    description: "Fashion, footwear, and accessories curated for every occasion.",
     image: "/hero/3.jpg",
-    cta: "Explore"
+    cta: "Explore fashion",
+    href: "/search?category=Men%27s%20Fashion",
+    accent: "from-rose-500 via-fuchsia-600 to-indigo-700"
   }
-];
+] as const;
 
 export const products: Product[] = [
   {

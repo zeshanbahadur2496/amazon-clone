@@ -49,7 +49,7 @@ function Pagination({ params, page, totalPages }: { params: SearchParams; page: 
           href={buildPageHref(params, p)}
           className={`min-w-9 rounded border px-3 py-2 text-center text-sm font-bold ${
             p === page
-              ? "border-amazon-orange bg-amazon-orange text-slate-950"
+              ? "border-indigo-500 bg-gradient-to-r from-indigo-500 to-cyan-500 text-white"
               : "border-slate-300 bg-white dark:border-white/10 dark:bg-slate-900"
           }`}
         >
@@ -73,7 +73,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <div className="mx-auto max-w-[1500px] px-3 py-4 sm:px-4">
-      <div className="mb-3 rounded border border-slate-200 bg-white px-4 py-3 dark:border-white/10 dark:bg-slate-900">
+      <div className="mb-3 rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] px-4 py-3 shadow-soft">
         <p className="text-sm text-slate-600 dark:text-slate-300">
           {total > 0 ? (
             <>

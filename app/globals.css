@@ -4,20 +4,58 @@
 
 :root {
   color-scheme: light;
-  --amazon-page: #eaeded;
-  --amazon-card: #ffffff;
-  --amazon-text: #0f1111;
-  --amazon-text-secondary: #565959;
-  --amazon-border: #d5d9d9;
+  --store-bg: #f4f6fb;
+  --store-bg-accent: #eef2ff;
+  --store-surface: #ffffff;
+  --store-surface-muted: #f8fafc;
+  --store-text: #0f172a;
+  --store-text-muted: #64748b;
+  --store-border: #e2e8f0;
+  --store-primary: #6366f1;
+  --store-primary-hover: #4f46e5;
+  --store-accent: #06b6d4;
+  --store-accent-soft: #cffafe;
+  --store-deal: #f43f5e;
+  --store-success: #10b981;
+  --store-header: rgba(255, 255, 255, 0.82);
+  --store-header-border: rgba(148, 163, 184, 0.35);
+  --store-nav: rgba(248, 250, 252, 0.92);
+  --store-shadow: 0 10px 40px rgba(15, 23, 42, 0.08);
+  --store-glow: 0 0 0 1px rgba(99, 102, 241, 0.08), 0 20px 50px rgba(99, 102, 241, 0.12);
+
+  --amazon-page: var(--store-bg);
+  --amazon-card: var(--store-surface);
+  --amazon-text: var(--store-text);
+  --amazon-text-secondary: var(--store-text-muted);
+  --amazon-border: var(--store-border);
 }
 
 .dark {
   color-scheme: dark;
-  --amazon-page: #0f172a;
-  --amazon-card: #1e293b;
-  --amazon-text: #e2e8f0;
-  --amazon-text-secondary: #94a3b8;
-  --amazon-border: rgba(255, 255, 255, 0.1);
+  --store-bg: #0b0f19;
+  --store-bg-accent: #111827;
+  --store-surface: #151b28;
+  --store-surface-muted: #1a2233;
+  --store-text: #f1f5f9;
+  --store-text-muted: #94a3b8;
+  --store-border: rgba(148, 163, 184, 0.18);
+  --store-primary: #818cf8;
+  --store-primary-hover: #a5b4fc;
+  --store-accent: #22d3ee;
+  --store-accent-soft: rgba(34, 211, 238, 0.12);
+  --store-deal: #fb7185;
+  --store-success: #34d399;
+  --store-header: rgba(11, 15, 25, 0.88);
+  --store-header-border: rgba(148, 163, 184, 0.15);
+  --store-nav: rgba(17, 24, 39, 0.92);
+  --store-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+  --store-glow: 0 0 0 1px rgba(129, 140, 248, 0.15), 0 24px 60px rgba(0, 0, 0, 0.5);
+
+  --amazon-page: var(--store-bg);
+  --amazon-card: var(--store-surface);
+  --amazon-text: var(--store-text);
+  --amazon-text-secondary: var(--store-text-muted);
+  --amazon-border: var(--store-border);
 }
 
 * {
@@ -30,16 +68,24 @@ html {
 
 body {
   min-height: 100vh;
-  background: var(--amazon-page);
-  color: var(--amazon-text);
-  font-family: "Amazon Ember", Arial, ui-sans-serif, system-ui, sans-serif;
+  background: var(--store-bg);
+  color: var(--store-text);
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.08), transparent 28%),
+    radial-gradient(circle at 100% 0%, rgba(6, 182, 212, 0.08), transparent 24%);
+}
+
+.dark body {
+  background-image:
+    radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.12), transparent 30%),
+    radial-gradient(circle at 100% 10%, rgba(6, 182, 212, 0.1), transparent 26%);
 }
 
 ::selection {
-  background: #febd69;
-  color: #0f1111;
+  background: rgba(99, 102, 241, 0.25);
+  color: var(--store-text);
 }
 
 input,
@@ -49,7 +95,7 @@ textarea {
 }
 
 select option {
-  color: #0f1111;
+  color: #0f172a;
 }
 
 .line-clamp-1 {
@@ -67,24 +113,37 @@ select option {
 }
 
 @layer components {
-  .amazon-card {
-    @apply rounded border border-slate-200 bg-white p-4 shadow-card transition hover:shadow-cardHover dark:border-white/10 dark:bg-slate-900;
+  .amazon-card,
+  .store-card {
+    @apply rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] p-4 shadow-soft transition duration-300 hover:-translate-y-0.5 hover:shadow-cardHover;
   }
 
-  .amazon-section {
+  .amazon-section,
+  .store-section {
     @apply mx-auto max-w-amazon px-3 py-4 sm:px-4;
   }
 
-  .amazon-btn-primary {
-    @apply rounded-full bg-amazon-gold px-4 py-2 text-sm font-medium text-slate-950 shadow-sm transition hover:bg-[#f5c78a];
+  .amazon-btn-primary,
+  .store-btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-500 px-4 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-indigo-600 hover:to-cyan-600 active:scale-[0.98];
   }
 
-  .amazon-btn-secondary {
-    @apply rounded-full border border-slate-300 bg-gradient-to-b from-slate-50 to-slate-200 px-4 py-2 text-sm shadow-sm transition hover:from-slate-100 hover:to-slate-300 dark:border-white/20 dark:from-slate-800 dark:to-slate-900;
+  .amazon-btn-secondary,
+  .store-btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-4 py-2.5 text-sm font-semibold text-[color:var(--store-text)] shadow-sm transition hover:border-indigo-300 hover:bg-indigo-50 dark:hover:border-indigo-500/40 dark:hover:bg-indigo-500/10;
   }
 
-  .amazon-link {
-    @apply text-amazon-teal hover:text-amazon-orange hover:underline;
+  .amazon-link,
+  .store-link {
+    @apply text-indigo-600 hover:text-cyan-600 hover:underline dark:text-indigo-300 dark:hover:text-cyan-300;
+  }
+
+  .store-glass {
+    @apply border border-[color:var(--store-header-border)] bg-[color:var(--store-header)] backdrop-blur-xl;
+  }
+
+  .store-pill {
+    @apply rounded-full border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-3 py-1.5 text-sm transition hover:border-indigo-300 hover:text-indigo-600 dark:hover:border-indigo-500/40 dark:hover:text-indigo-300;
   }
 }
 
@@ -95,5 +154,9 @@ select option {
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent;
   }
 }

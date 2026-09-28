@@ -36,7 +36,7 @@ export default async function OrdersPage() {
         <div className="rounded-lg border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-white/10 dark:bg-slate-900">
           <h2 className="text-2xl font-black tracking-normal">Sign in to view orders</h2>
           <p className="mt-2 text-slate-600 dark:text-slate-300">Your order history, invoices, and shipping updates live here.</p>
-          <Link href="/login?callbackUrl=/dashboard/orders" className="mt-5 inline-flex h-11 items-center rounded-md bg-amazon-gold px-5 text-sm font-bold text-slate-950">
+          <Link href="/login?callbackUrl=/dashboard/orders" className="store-btn-primary mt-5 inline-flex h-11 items-center px-5">
             Sign in
           </Link>
         </div>
@@ -53,7 +53,7 @@ export default async function OrdersPage() {
           <PackageSearch className="mx-auto h-12 w-12 text-slate-400" />
           <h2 className="mt-4 text-2xl font-black tracking-normal">No orders yet</h2>
           <p className="mt-2 text-slate-600 dark:text-slate-300">When you place an order, it will show up here.</p>
-          <Link href="/search" className="mt-5 inline-flex h-11 items-center rounded-md bg-amazon-gold px-5 text-sm font-bold text-slate-950">
+          <Link href="/search" className="store-btn-primary mt-5 inline-flex h-11 items-center px-5">
             Start shopping
           </Link>
         </div>

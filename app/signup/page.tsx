@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function SignupPage() {
   return (
-    <div className="min-h-[calc(100vh-260px)] bg-gradient-to-b from-slate-100 to-white px-5 py-12 dark:from-slate-950 dark:to-slate-900">
+    <div className="min-h-[calc(100vh-260px)] bg-[color:var(--store-bg)] px-5 py-12">
       <Suspense fallback={null}>
         <AuthCard mode="signup" />
       </Suspense>
