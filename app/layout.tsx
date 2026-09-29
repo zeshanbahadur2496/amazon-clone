@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { Suspense } from "react";
 
 import { Footer } from "@/components/layout/footer";
@@ -8,10 +8,11 @@ import { AiShoppingAssistant } from "@/components/ai/shopping-assistant";
 import { AppProviders } from "@/components/providers/app-providers";
 import "./globals.css";
 
-const inter = Inter({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap"
+  variable: "--font-sans",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800"]
 });
 
 export const metadata: Metadata = {
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} flex min-h-screen flex-col font-sans antialiased`}>
+      <body className={`${plusJakarta.variable} flex min-h-screen flex-col font-sans antialiased`}>
         <AppProviders>
           <Suspense fallback={null}>
             <Navbar />

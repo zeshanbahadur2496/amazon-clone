@@ -27,31 +27,31 @@ export const categories = [
 
 export const heroSlides = [
   {
-    eyebrow: "NovaMart Deals",
-    title: "Smart savings on everyday essentials",
-    description: "Home, kitchen, and lifestyle picks with fast delivery and member-only prices.",
+    eyebrow: "NovaMart",
+    title: "Everything you need, delivered fast",
+    description: "Shop thousands of products across electronics, fashion, home, and more — with prices you will love.",
     image: "/hero/1.jpg",
-    cta: "Shop home deals",
-    href: "/search?category=Home%20%26%20Kitchen",
-    accent: "from-indigo-600 via-violet-600 to-indigo-800"
+    cta: "Start shopping",
+    href: "/search",
+    accent: "from-stone-800 via-stone-700 to-stone-900"
   },
   {
-    eyebrow: "Tech Week",
-    title: "Upgrade your setup for less",
-    description: "Phones, laptops, audio, and smart devices from top brands — up to 40% off.",
+    eyebrow: "Flash Sale",
+    title: "Up to 40% off top electronics",
+    description: "Phones, laptops, headphones, and smart gear from trusted brands. Limited-time offers inside.",
     image: "/hero/2.jpg",
-    cta: "Browse electronics",
+    cta: "Shop electronics",
     href: "/search?category=Electronics",
-    accent: "from-cyan-600 via-teal-600 to-indigo-700"
+    accent: "from-zinc-800 via-stone-700 to-zinc-900"
   },
   {
     eyebrow: "New Season",
-    title: "Fresh styles, delivered fast",
-    description: "Fashion, footwear, and accessories curated for every occasion.",
+    title: "Style that moves with you",
+    description: "Fresh fashion, footwear, and accessories — curated picks with free delivery on eligible orders.",
     image: "/hero/3.jpg",
-    cta: "Explore fashion",
+    cta: "Browse fashion",
     href: "/search?category=Men%27s%20Fashion",
-    accent: "from-rose-500 via-fuchsia-600 to-indigo-700"
+    accent: "from-amber-950 via-stone-800 to-stone-950"
   }
 ] as const;
 

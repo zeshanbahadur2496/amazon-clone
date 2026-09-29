@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import type { NotificationItem } from "@/types";
+import { cn } from "@/lib/utils";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
@@ -45,33 +46,31 @@ export default function NotificationsPage() {
   return (
     <DashboardShell title="Notifications">
       <div className="mb-4 flex justify-end">
-        <button type="button" onClick={markAllRead} className="text-sm font-bold text-amazon-teal hover:underline">
+        <button type="button" onClick={markAllRead} className="dashboard-link">
           Mark all as read
         </button>
       </div>
       <div className="space-y-3">
-        {loading && <p className="text-sm text-slate-500">Loading notifications...</p>}
-        {!loading && notifications.length === 0 && (
-          <p className="text-sm text-slate-500">No notifications yet.</p>
-        )}
+        {loading && <p className="dashboard-muted">Loading notifications...</p>}
+        {!loading && notifications.length === 0 && <p className="dashboard-muted">No notifications yet.</p>}
         {notifications.map((n) => (
           <article
             key={n.id}
-            className={`amazon-card ${!n.read ? "border-l-4 border-l-amazon-orange" : ""}`}
+            className={cn("store-panel p-4", !n.read && "border-l-4 border-l-[color:var(--store-accent)]")}
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase text-slate-500">{n.type}</p>
-                <h3 className="font-bold">{n.title}</h3>
-                <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{n.body}</p>
+                <p className="text-xs font-bold uppercase text-[color:var(--store-text-muted)]">{n.type}</p>
+                <h3 className="font-semibold text-[color:var(--store-text)]">{n.title}</h3>
+                <p className="dashboard-muted mt-1">{n.body}</p>
                 {n.link && (
-                  <Link href={n.link} className="mt-2 inline-block text-sm text-amazon-teal hover:underline">
+                  <Link href={n.link} className="dashboard-link mt-2 inline-block">
                     View details
                   </Link>
                 )}
               </div>
               {!n.read && (
-                <button type="button" className="text-xs text-amazon-teal hover:underline" onClick={() => markRead(n.id)}>
+                <button type="button" className="dashboard-link text-xs" onClick={() => markRead(n.id)}>
                   Mark read
                 </button>
               )}

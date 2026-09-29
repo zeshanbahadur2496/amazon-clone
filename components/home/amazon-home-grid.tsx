@@ -70,10 +70,10 @@ export function AmazonHomeGrid({ products }: { products: Product[] }) {
       <div className="mx-auto max-w-[1500px] px-[15px]">
         <div className="overflow-hidden rounded-2xl shadow-soft">
           <PromoBanner
-            title="Watch free on Prime Video"
-            subtitle="Movies, TV shows, and live sports included with Prime"
-            cta="Watch now"
-            href="/prime"
+            title="Free delivery on qualifying orders"
+            subtitle="Fast shipping on thousands of items when you shop NovaMart."
+            cta="Shop now"
+            href="/search"
             image={products[0]?.images[0] ?? "/hero/1.jpg"}
             dark
           />

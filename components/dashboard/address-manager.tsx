@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/button";
 
 const emptyForm = { fullName: "", phone: "", line1: "", line2: "", city: "", state: "", pincode: "" };
 
+const fieldClass =
+  "store-input h-11 w-full px-3 text-[color:var(--store-text)] placeholder:text-[color:var(--store-text-muted)]";
+
 export function AddressManager({ initialAddresses }: { initialAddresses: Address[] }) {
   const [addresses, setAddresses] = useState(initialAddresses);
   const [form, setForm] = useState(emptyForm);
@@ -97,43 +100,43 @@ export function AddressManager({ initialAddresses }: { initialAddresses: Address
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-slate-900">
-        <h2 className="flex items-center gap-2 text-xl font-black tracking-normal">
-          <MapPin className="h-5 w-5 text-amazon-orange" />
+      <div className="store-panel p-6">
+        <h2 className="dashboard-heading flex items-center gap-2">
+          <MapPin className="h-5 w-5 text-[color:var(--store-accent)]" />
           Saved addresses
         </h2>
 
         {addresses.length === 0 ? (
-          <p className="mt-5 text-sm text-slate-600 dark:text-slate-300">No saved addresses yet. Add one to speed up checkout.</p>
+          <p className="dashboard-muted mt-5">No saved addresses yet. Add one to speed up checkout.</p>
         ) : (
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             {addresses.map((address) => (
-              <article key={address.id} className="rounded-lg border border-slate-200 p-4 dark:border-white/10">
+              <article key={address.id} className="dashboard-card-inner">
                 <div className="flex items-start justify-between">
-                  <Home className="h-5 w-5 text-amazon-teal" />
+                  <Home className="h-5 w-5 text-[color:var(--store-accent)]" />
                   {address.isDefault && (
-                    <span className="rounded bg-amber-50 px-2 py-0.5 text-[10px] font-bold uppercase text-amazon-orange dark:bg-white/10">
+                    <span className="rounded-full bg-[color:var(--store-accent-soft)] px-2 py-0.5 text-[10px] font-bold uppercase text-[color:var(--store-accent)]">
                       Default
                     </span>
                   )}
                 </div>
-                <h3 className="mt-3 font-black">{address.fullName}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                <h3 className="mt-3 font-semibold text-[color:var(--store-text)]">{address.fullName}</h3>
+                <p className="dashboard-muted mt-2 leading-6">
                   {address.line1}
                   {address.line2 ? `, ${address.line2}` : ""}, {address.city}, {address.state} {address.pincode}
                 </p>
-                <p className="mt-1 text-xs text-slate-500">{address.phone}</p>
+                <p className="mt-1 text-xs text-[color:var(--store-text-muted)]">{address.phone}</p>
                 <div className="mt-3 flex flex-wrap gap-3 text-sm">
-                  <button type="button" onClick={() => startEdit(address)} className="font-bold text-amazon-teal">
+                  <button type="button" onClick={() => startEdit(address)} className="dashboard-link">
                     Edit
                   </button>
                   {!address.isDefault && (
-                    <button type="button" onClick={() => makeDefault(address.id)} className="inline-flex items-center gap-1 font-bold text-amazon-teal">
+                    <button type="button" onClick={() => makeDefault(address.id)} className="dashboard-link inline-flex items-center gap-1">
                       <Star className="h-3.5 w-3.5" />
                       Set default
                     </button>
                   )}
-                  <button type="button" onClick={() => deleteAddress(address.id)} className="inline-flex items-center gap-1 font-bold text-red-600">
+                  <button type="button" onClick={() => deleteAddress(address.id)} className="inline-flex items-center gap-1 text-sm font-semibold text-rose-500 hover:underline">
                     <Trash2 className="h-3.5 w-3.5" />
                     Delete
                   </button>
@@ -144,8 +147,8 @@ export function AddressManager({ initialAddresses }: { initialAddresses: Address
         )}
       </div>
 
-      <form onSubmit={onSubmit} className="h-fit rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-slate-900">
-        <h2 className="text-xl font-black tracking-normal">{editingId ? "Edit address" : "Add address"}</h2>
+      <form onSubmit={onSubmit} className="store-panel h-fit p-5">
+        <h2 className="dashboard-heading">{editingId ? "Edit address" : "Add address"}</h2>
         <div className="mt-4 space-y-3">
           {(
             [
@@ -159,12 +162,12 @@ export function AddressManager({ initialAddresses }: { initialAddresses: Address
             ] as const
           ).map(([key, label]) => (
             <label key={key} className="block">
-              <span className="mb-1 block text-sm font-bold text-slate-700 dark:text-slate-200">{label}</span>
+              <span className="dashboard-label">{label}</span>
               <input
                 required={key !== "line2"}
                 value={form[key]}
                 onChange={(event) => setForm((f) => ({ ...f, [key]: event.target.value }))}
-                className="h-11 w-full rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10"
+                className={fieldClass}
               />
             </label>
           ))}

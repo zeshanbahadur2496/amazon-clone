@@ -58,25 +58,6 @@ export function RecommendedForYou({ products }: SectionProps) {
   );
 }
 
-export function PrimeExclusiveDeals({ products }: SectionProps) {
-  const prime = sliceProducts(products, (p) => p.isPrime && p.discount > 0, 5);
-
-  if (prime.length === 0) return null;
-
-  return (
-    <section className="mx-auto max-w-[1500px] px-3 sm:px-4">
-      <div className="rounded border border-slate-200 bg-white p-4 shadow-card dark:border-white/10 dark:bg-slate-900 sm:p-5">
-        <SectionHeading title="Prime Exclusive Deals" href="/prime" />
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
-          {prime.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export function SponsoredProducts({ products }: SectionProps) {
   const sponsored = sliceProducts(products, (p) => p.isFeatured, 4);
 
@@ -89,9 +70,11 @@ export function SponsoredProducts({ products }: SectionProps) {
           <h2 className="text-lg font-bold text-slate-950 dark:text-white sm:text-xl">Sponsored products</h2>
           <span className="text-xs text-slate-400">Sponsored</span>
         </div>
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-2 items-stretch gap-3 sm:gap-4 lg:grid-cols-4">
           {sponsored.map((product) => (
-            <ProductCard key={product.id} product={product} sponsored />
+            <div key={product.id} className="h-full min-h-0">
+              <ProductCard product={product} sponsored />
+            </div>
           ))}
         </div>
       </div>

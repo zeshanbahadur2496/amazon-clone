@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { cn } from "@/lib/utils";
+
 type PromoBannerProps = {
   title: string;
   subtitle?: string;
@@ -14,17 +16,25 @@ export function PromoBanner({ title, subtitle, cta, href, image, dark = false }:
   return (
     <Link
       href={href}
-      className={`group relative block overflow-hidden rounded-2xl ${
+      className={cn(
+        "group relative block overflow-hidden rounded-2xl",
         dark
-          ? "bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900"
-          : "bg-[color:var(--store-surface)]"
-      }`}
+          ? "bg-[#1c1917] text-[#fafaf9] dark:bg-[color:var(--store-surface-muted)] dark:text-[color:var(--store-text)] dark:ring-1 dark:ring-[color:var(--store-border)]"
+          : "bg-[color:var(--store-surface)] text-[color:var(--store-text)]"
+      )}
     >
       <div className="mx-auto flex max-w-[1500px] items-center justify-between gap-4 px-5 py-5 sm:px-8">
         <div className="min-w-0 flex-1">
-          <p className={`text-lg font-bold sm:text-xl ${dark ? "text-white" : "text-[color:var(--store-text)]"}`}>{title}</p>
+          <p className="text-lg font-bold sm:text-xl">{title}</p>
           {subtitle && (
-            <p className={`mt-1 text-sm ${dark ? "text-slate-300" : "text-[color:var(--store-text-muted)]"}`}>{subtitle}</p>
+            <p
+              className={cn(
+                "mt-1 text-sm",
+                dark ? "text-[#d6d3d1] dark:text-[color:var(--store-text-muted)]" : "text-[color:var(--store-text-muted)]"
+              )}
+            >
+              {subtitle}
+            </p>
           )}
           <span className="store-link mt-2 inline-block text-sm font-semibold">{cta}</span>
         </div>

@@ -3,7 +3,6 @@
 import { Bookmark, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -15,9 +14,7 @@ import { computeOrderTotals, formatLocalPrice } from "@/lib/pricing";
 import { useMarket } from "@/hooks/use-market";
 
 export function CartView() {
-  const { data: session } = useSession();
   const { market, config, formatPrice } = useMarket();
-  const isPrime = Boolean(session?.user?.isPrime);
   const items = useCartStore((s) => s.items);
   const savedItems = useCartStore((s) => s.savedItems);
   const subtotalINR = useCartStore((s) => s.subtotal());
@@ -34,7 +31,6 @@ export function CartView() {
   const totals = computeOrderTotals({
     subtotalINR,
     marketCode: market,
-    isPrime,
     couponCode: couponCode ?? undefined
   });
   const { subtotal, shipping, tax, couponDiscount, total } = totals;
@@ -52,7 +48,7 @@ export function CartView() {
   if (items.length === 0 && savedItems.length === 0) {
     return (
       <div className="amazon-section py-16 text-center">
-        <ShoppingBag className="mx-auto h-14 w-14 text-indigo-500" />
+        <ShoppingBag className="mx-auto h-14 w-14 text-[color:var(--store-accent)]" />
         <h1 className="mt-5 text-3xl font-bold text-[color:var(--store-text)]">Your cart is empty</h1>
         <Link href="/search" className="amazon-btn-primary mt-6 inline-flex">
           Continue shopping
@@ -141,17 +137,17 @@ export function CartView() {
         )}
       </section>
 
-      <aside className="h-fit rounded border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-slate-900 lg:sticky lg:top-20">
-        <h2 className="text-lg">
+      <aside className="store-panel h-fit p-4 lg:sticky lg:top-20">
+        <h2 className="text-lg text-[color:var(--store-text)]">
           Subtotal ({items.reduce((n, i) => n + i.quantity, 0)} items):{" "}
-          <span className="font-bold text-slate-950 dark:text-white">{formatLocalPrice(subtotal, market)}</span>
+          <span className="font-bold">{formatLocalPrice(subtotal, market)}</span>
         </h2>
         <div className="mt-4 flex gap-2">
           <input
             value={couponInput}
             onChange={(e) => setCouponInput(e.target.value)}
             placeholder="Enter coupon"
-            className="h-10 flex-1 rounded border px-3 text-sm dark:border-white/10 dark:bg-slate-950"
+            className="store-input h-10 flex-1 px-3"
           />
           <Button variant="outline" type="button" onClick={handleCoupon}>
             Apply

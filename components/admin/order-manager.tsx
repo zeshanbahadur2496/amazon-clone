@@ -6,6 +6,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
+import { StoreSelect } from "@/components/ui/store-select";
 import { formatPrice } from "@/lib/utils";
 
 type AdminOrder = Prisma.OrderGetPayload<{
@@ -102,20 +103,19 @@ export function OrderManager({ initialOrders }: { initialOrders: AdminOrder[] })
                   <td className="px-4 py-4">{order.items.length}</td>
                   <td className="px-4 py-4 font-bold">{formatPrice(order.total)}</td>
                   <td className="px-4 py-4">
-                    <Badge tone={order.status === "DELIVERED" ? "success" : order.status === "CANCELLED" || order.status === "RETURNED" ? "deal" : "prime"}>
+                    <Badge tone={order.status === "DELIVERED" ? "success" : order.status === "CANCELLED" || order.status === "RETURNED" ? "deal" : "accent"}>
                       {order.status}
                     </Badge>
                   </td>
                   <td className="px-4 py-4">
-                    <select
+                    <StoreSelect
                       value={order.status}
-                      onChange={(event) => updateStatus(order.id, event.target.value as AdminOrder["status"])}
-                      className="h-10 rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10"
-                    >
-                      {statuses.map((status) => (
-                        <option key={status}>{status}</option>
-                      ))}
-                    </select>
+                      onChange={(next) => updateStatus(order.id, next as AdminOrder["status"])}
+                      options={statuses.map((status) => ({ value: status, label: status }))}
+                      aria-label={`Update status for order ${order.id}`}
+                      size="sm"
+                      className="min-w-[9rem]"
+                    />
                   </td>
                 </tr>
               ))}

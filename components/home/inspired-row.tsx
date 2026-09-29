@@ -42,7 +42,7 @@ export function InspiredRow({ products }: { products: Product[] }) {
               </div>
               <p className="store-link mt-2 line-clamp-2 text-[13px] leading-snug">{product.title}</p>
               <Rating value={product.rating} count={product.reviewCount} className="mt-1 origin-left scale-90" />
-              <MarketPrice value={product.price} className="mt-1 block text-[15px] font-bold text-indigo-600 dark:text-indigo-300" />
+              <MarketPrice value={product.price} className="mt-1 block text-[15px] font-bold text-[color:var(--store-text)]" />
             </Link>
           ))}
         </div>

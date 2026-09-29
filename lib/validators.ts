@@ -52,7 +52,7 @@ export const checkoutSchema = z.object({
   market: z.string().optional(),
   couponCode: z.string().nullish(),
   deliveryMethod: z.enum(["standard", "express"]).optional(),
-  paymentMethod: z.string().optional(),
+  paymentMethod: z.enum(["cod", "stripe", "razorpay", "paypal"]).optional(),
   address: z.object({
     fullName: z.string().min(2),
     phone: z.string().min(8),

@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 import { Rating } from "@/components/ui/rating";
 import { Button } from "@/components/ui/button";
+import { StoreSelect } from "@/components/ui/store-select";
 import { cn } from "@/lib/utils";
 import type { Product, ReviewItem } from "@/types";
 
@@ -95,30 +96,30 @@ export function ProductReviews({ product, initialReviews }: { product: Product; 
           <Rating value={product.rating} count={product.reviewCount} className="mt-1" />
         </div>
         <div className="flex flex-wrap gap-2">
-          <select
+          <StoreSelect
             value={sort}
-            onChange={(e) => setSort(e.target.value as SortKey)}
-            className="rounded border border-slate-200 px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-900"
+            onChange={(next) => setSort(next as SortKey)}
+            options={[
+              { value: "helpful", label: "Most helpful" },
+              { value: "recent", label: "Most recent" },
+              { value: "rating-high", label: "Highest rating" },
+              { value: "rating-low", label: "Lowest rating" }
+            ]}
             aria-label="Sort reviews"
-          >
-            <option value="helpful">Most helpful</option>
-            <option value="recent">Most recent</option>
-            <option value="rating-high">Highest rating</option>
-            <option value="rating-low">Lowest rating</option>
-          </select>
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value === "all" ? "all" : Number(e.target.value))}
-            className="rounded border border-slate-200 px-3 py-2 text-sm dark:border-white/10 dark:bg-slate-900"
+            size="sm"
+            className="min-w-[10rem]"
+          />
+          <StoreSelect
+            value={filter === "all" ? "all" : String(filter)}
+            onChange={(next) => setFilter(next === "all" ? "all" : Number(next))}
+            options={[
+              { value: "all", label: "All stars" },
+              ...[5, 4, 3, 2, 1].map((n) => ({ value: String(n), label: `${n} star` }))
+            ]}
             aria-label="Filter by rating"
-          >
-            <option value="all">All stars</option>
-            {[5, 4, 3, 2, 1].map((n) => (
-              <option key={n} value={n}>
-                {n} star
-              </option>
-            ))}
-          </select>
+            size="sm"
+            className="min-w-[8rem]"
+          />
         </div>
       </div>
 

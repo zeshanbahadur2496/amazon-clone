@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
+import { StoreSelect } from "@/components/ui/store-select";
 
 type AdminUser = {
   id: string;
@@ -86,14 +87,17 @@ export function UserManager({ initialUsers }: { initialUsers: AdminUser[] }) {
                     <td className="px-4 py-4">{user._count.orders}</td>
                     <td className="px-4 py-4">{new Date(user.createdAt).toLocaleDateString("en-IN")}</td>
                     <td className="px-4 py-4">
-                      <select
+                      <StoreSelect
                         value={user.role}
-                        onChange={(event) => updateRole(user.id, event.target.value as AdminUser["role"])}
-                        className="h-10 rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10"
-                      >
-                        <option>USER</option>
-                        <option>ADMIN</option>
-                      </select>
+                        onChange={(next) => updateRole(user.id, next as AdminUser["role"])}
+                        options={[
+                          { value: "USER", label: "USER" },
+                          { value: "ADMIN", label: "ADMIN" }
+                        ]}
+                        aria-label={`Change role for ${user.email ?? user.name ?? "user"}`}
+                        size="sm"
+                        className="min-w-[7rem]"
+                      />
                     </td>
                   </tr>
                 ))}

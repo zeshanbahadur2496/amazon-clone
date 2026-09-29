@@ -7,9 +7,9 @@ import { useRouter } from "next/navigation";
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
+import { CategoryMegaMenu } from "@/components/layout/category-mega-menu";
 import { useSearchHistoryStore } from "@/components/providers/search-history-store";
 import { useSearchSuggestions } from "@/hooks/use-search-suggestions";
-import { categories } from "@/lib/data";
 import { trendingSearches } from "@/lib/design-tokens";
 import { useMarket } from "@/hooks/use-market";
 import { cn } from "@/lib/utils";
@@ -26,6 +26,7 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
   const [query, setQuery] = useState(initialQuery);
   const [category, setCategory] = useState("All");
   const [open, setOpen] = useState(false);
+  const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
   const { products, queries, loading } = useSearchSuggestions(open ? query : "");
@@ -89,31 +90,21 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
     }
   }
 
-  const showPanel = open && (query || history.length > 0);
+  const showPanel = open && !categoryMenuOpen && (query || history.length > 0);
 
   return (
     <div ref={containerRef} className={cn("relative flex-1", className)}>
-      <form onSubmit={onSubmit} className="flex h-11 overflow-hidden rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] shadow-sm focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20">
+      <form onSubmit={onSubmit} className="flex h-11 overflow-visible rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] shadow-sm focus-within:border-[color:var(--store-accent)] focus-within:ring-2 focus-within:ring-[color:var(--store-focus)]">
         {!compact && (
-          <>
-            <label className="sr-only" htmlFor="search-category">
-              Category
-            </label>
-            <select
-              id="search-category"
-              value={category}
-              onChange={(event) => setCategory(event.target.value)}
-              className="hidden w-16 shrink-0 cursor-pointer border-r border-slate-300 bg-slate-100 px-1.5 text-xs text-slate-600 outline-none hover:bg-slate-200 sm:block md:w-28 md:px-2 md:text-sm"
-              aria-label="Search category"
-            >
-              <option value="All">All</option>
-              {categories.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-          </>
+          <CategoryMegaMenu
+            value={category}
+            onChange={setCategory}
+            onOpenChange={(next) => {
+              setCategoryMenuOpen(next);
+              if (next) setOpen(false);
+            }}
+            className="hidden sm:block"
+          />
         )}
         <input
           id="amazon-search"
@@ -123,7 +114,10 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
             setOpen(true);
             setActiveIndex(-1);
           }}
-          onFocus={() => setOpen(true)}
+          onFocus={() => {
+            setOpen(true);
+            setCategoryMenuOpen(false);
+          }}
           onKeyDown={onKeyDown}
           placeholder="Search products, brands, and categories"
           className={cn("min-w-0 flex-1 bg-transparent text-[color:var(--store-text)] outline-none placeholder:text-[color:var(--store-text-muted)]", compact ? "px-3 text-sm" : "px-3 text-sm md:text-[15px]")}
@@ -135,7 +129,7 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
         />
         <button
           type="button"
-          className="hidden w-11 items-center justify-center border-l border-slate-200 text-slate-600 hover:bg-slate-50 sm:flex"
+          className="hidden w-11 shrink-0 items-center justify-center border-l border-[color:var(--store-border)] bg-transparent text-[color:var(--store-text-muted)] transition hover:text-[color:var(--store-text)] sm:flex"
           aria-label="Voice search"
           onClick={() => {
             const win = window as Window & {
@@ -167,7 +161,7 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
         <button
           type="submit"
           className={cn(
-            "flex items-center justify-center bg-gradient-to-r from-indigo-500 to-cyan-500 text-white transition hover:from-indigo-600 hover:to-cyan-600",
+            "flex shrink-0 items-center justify-center border-l border-[color:var(--store-border)] bg-transparent text-[color:var(--store-text-muted)] transition hover:text-[color:var(--store-accent)] focus:outline-none focus-visible:text-[color:var(--store-accent)] active:bg-transparent",
             compact ? "w-11" : "w-12"
           )}
           aria-label="Search"
@@ -180,7 +174,7 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
         <div
           id="search-suggestions"
           role="listbox"
-          className="absolute left-0 right-0 top-full z-[60] mt-2 max-h-[70vh] overflow-y-auto rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] text-[color:var(--store-text)] shadow-dropdown"
+          className="store-scroll absolute left-0 right-0 top-full z-[60] mt-2 max-h-[70vh] rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] text-[color:var(--store-text)] shadow-dropdown"
         >
           {!query && history.length > 0 && (
             <div className="border-b border-slate-100 p-2 dark:border-white/10">
@@ -227,7 +221,15 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
             </div>
           )}
 
-          {loading && query && <p className="px-4 py-3 text-sm text-slate-500">Searching…</p>}
+          {loading && query && products.length === 0 && queries.length === 0 && (
+            <p className="px-4 py-3 text-sm text-[color:var(--store-text-muted)]">Searching…</p>
+          )}
+
+          {!loading && query && products.length === 0 && queries.length === 0 && (
+            <p className="px-4 py-3 text-sm text-[color:var(--store-text-muted)]">
+              No results for &ldquo;{query}&rdquo;
+            </p>
+          )}
 
           {queries.map((term, index) => (
             <button
@@ -245,7 +247,7 @@ export function SearchBar({ className, initialQuery = "", compact = false }: Sea
               <span>
                 {term.split(new RegExp(`(${query})`, "gi")).map((part, i) =>
                   part.toLowerCase() === query.toLowerCase() ? (
-                    <strong key={i} className="font-bold text-indigo-600 dark:text-indigo-300">
+                    <strong key={i} className="font-bold text-[color:var(--store-accent)]">
                       {part}
                     </strong>
                   ) : (

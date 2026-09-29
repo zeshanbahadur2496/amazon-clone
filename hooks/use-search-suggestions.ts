@@ -18,21 +18,29 @@ export function useSearchSuggestions(query: string) {
   useEffect(() => {
     if (!debounced.trim()) {
       setData({ products: [], queries: [] });
+      setLoading(false);
       return;
     }
 
     const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 8000);
     setLoading(true);
 
     fetch(`/api/search/suggestions?q=${encodeURIComponent(debounced)}`, {
       signal: controller.signal
     })
-      .then((res) => res.json())
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("Search failed"))))
       .then((json: SuggestionResult) => setData(json))
       .catch(() => {})
-      .finally(() => setLoading(false));
+      .finally(() => {
+        window.clearTimeout(timeoutId);
+        setLoading(false);
+      });
 
-    return () => controller.abort();
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
   }, [debounced]);
 
   return { ...data, loading, debounced };

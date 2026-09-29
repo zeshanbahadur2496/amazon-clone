@@ -22,7 +22,7 @@ export function DealShelf({ products, title = "Lightning deals" }: { products: P
               <Link
                 href={`/products/${product.slug}`}
                 key={product.id}
-                className="group w-40 shrink-0 overflow-hidden rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-cardHover sm:w-48"
+                className="group w-40 shrink-0 overflow-hidden rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] transition hover:-translate-y-0.5 hover:border-[color:var(--store-accent)] hover:shadow-cardHover sm:w-48"
               >
                 <div className="relative aspect-square">
                   <Image src={product.images[0]} alt={product.title} fill sizes="200px" className="object-contain p-3 transition group-hover:scale-105" />
@@ -31,7 +31,7 @@ export function DealShelf({ products, title = "Lightning deals" }: { products: P
                   <Badge tone="deal">{product.discount}% off</Badge>
                   <h3 className="mt-2 line-clamp-2 min-h-9 text-sm font-medium text-[color:var(--store-text)]">{product.title}</h3>
                   <div className="mt-1.5 flex items-baseline gap-1.5">
-                    <MarketPrice value={product.price} className="text-base font-bold text-indigo-600 dark:text-indigo-300" />
+                    <MarketPrice value={product.price} className="text-base font-bold text-[color:var(--store-text)]" />
                     <MarketPrice value={product.mrp} className="text-xs text-[color:var(--store-text-muted)] line-through" />
                   </div>
                 </div>

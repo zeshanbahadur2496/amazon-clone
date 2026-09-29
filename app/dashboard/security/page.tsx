@@ -19,13 +19,13 @@ export default function SecurityPage() {
   return (
     <DashboardShell title="Login & Security">
       <div className="space-y-4">
-        <div className="amazon-card">
-          <h2 className="font-bold">Change password</h2>
+        <div className="store-panel p-6">
+          <h2 className="dashboard-heading text-lg">Change password</h2>
           <SecurityForm />
         </div>
-        <div className="amazon-card">
-          <h2 className="font-bold">Email verification</h2>
-          <p className="mt-2 text-sm text-slate-600">Verify your email address for account security.</p>
+        <div className="store-panel p-6">
+          <h2 className="dashboard-heading text-lg">Email verification</h2>
+          <p className="dashboard-muted mt-2">Verify your email address for account security.</p>
           <Button variant="outline" className="mt-4" onClick={sendVerification}>
             Send verification email
           </Button>

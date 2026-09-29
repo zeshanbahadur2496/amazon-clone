@@ -1,20 +1,25 @@
-import type { MetadataRoute } from "next";
-
-export default function manifest(): MetadataRoute.Manifest {
-  return {
-    name: "Amazon Clone",
-    short_name: "Amazon Clone",
-    description: "An educational full-stack Amazon.pk-inspired e-commerce clone.",
-    start_url: "/",
-    display: "standalone",
-    background_color: "#f4f6fb",
-    theme_color: "#131921",
-    icons: [
-      {
-        src: "/icon.svg",
-        sizes: "any",
-        type: "image/svg+xml"
-      }
-    ]
-  };
-}
+import type { MetadataRoute } from "next";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: "NovaMart — Modern Shopping",
+    short_name: "NovaMart",
+    description: "A modern marketplace with global pricing, fast checkout, and order tracking.",
+    start_url: "/",
+    display: "standalone",
+    background_color: "#f7f5f2",
+    theme_color: "#1c1917",
+    icons: [
+      {
+        src: "/icon.svg",
+        sizes: "any",
+        type: "image/svg+xml"
+      },
+      {
+        src: "/apple-icon.svg",
+        sizes: "180x180",
+        type: "image/svg+xml"
+      }
+    ]
+  };
+}

@@ -30,7 +30,7 @@ export default function ComparePage() {
     { label: "Discount", get: (p: (typeof items)[0]) => `${p.discount}%` },
     { label: "Rating", get: (p: (typeof items)[0]) => `${p.rating} ★` },
     { label: "Reviews", get: (p: (typeof items)[0]) => String(p.reviewCount) },
-    { label: "Prime", get: (p: (typeof items)[0]) => (p.isPrime ? "Yes" : "No") },
+    { label: "Fast delivery", get: (p: (typeof items)[0]) => (p.isPrime ? "Yes" : "Standard") },
     { label: "Stock", get: (p: (typeof items)[0]) => (p.stock > 0 ? "In stock" : "Out of stock") }
   ];
 

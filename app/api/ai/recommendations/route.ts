@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     case "deals":
       result = result.filter((p) => p.discount >= 15).sort((a, b) => b.discount - a.discount);
       break;
-    case "prime":
+    case "fast-delivery":
       result = result.filter((p) => p.isPrime);
       break;
     default:

@@ -15,7 +15,7 @@ export function AiShoppingAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hi! I'm your Amazon shopping assistant. Ask about products, orders, Prime, or deals."
+      content: "Hi! I'm your NovaMart shopping assistant. Ask about products, orders, or deals."
     }
   ]);
   const [suggestions, setSuggestions] = useState<string[]>(["Today's deals", "Track my order", "Best phones"]);
@@ -82,7 +82,7 @@ export function AiShoppingAssistant() {
               </button>
             </div>
 
-            <div className="flex-1 space-y-3 overflow-y-auto p-4">
+            <div className="store-scroll flex-1 space-y-3 p-4">
               {messages.map((msg, i) => (
                 <div
                   key={i}

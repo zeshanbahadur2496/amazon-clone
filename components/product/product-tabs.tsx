@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { ProductReviews } from "@/components/product/product-reviews";
+import { cn } from "@/lib/utils";
 import type { Product, ReviewItem } from "@/types";
 
 const tabs = ["Description", "Specifications", "Reviews", "Q&A"] as const;
@@ -20,17 +21,18 @@ export function ProductTabs({ product, reviews }: { product: Product; reviews: R
 
   return (
     <section>
-      <div className="flex gap-0 overflow-x-auto border-b border-slate-200 dark:border-white/10 no-scrollbar">
+      <div className="flex gap-0 overflow-x-auto border-b border-[color:var(--store-border)] no-scrollbar">
         {tabs.map((tab) => (
           <button
             key={tab}
             type="button"
             onClick={() => setActive(tab)}
-            className={`shrink-0 border-b-2 px-4 py-3 text-sm font-bold transition ${
+            className={cn(
+              "shrink-0 border-b-2 px-4 py-3 text-sm font-semibold transition",
               active === tab
-                ? "border-amazon-orange text-amazon-orange"
-                : "border-transparent text-slate-600 hover:text-slate-900 dark:text-slate-400"
-            }`}
+                ? "border-[color:var(--store-accent)] text-[color:var(--store-accent)]"
+                : "border-transparent text-[color:var(--store-text-muted)] hover:text-[color:var(--store-text)]"
+            )}
           >
             {tab}
           </button>
@@ -39,8 +41,8 @@ export function ProductTabs({ product, reviews }: { product: Product; reviews: R
 
       <div className="mt-6">
         {active === "Description" && (
-          <div className="prose max-w-none text-slate-700 dark:text-slate-300">
-            <p className="leading-7">{product.description}</p>
+          <div className="max-w-none text-[color:var(--store-text-muted)]">
+            <p className="leading-7 text-[color:var(--store-text)]">{product.description}</p>
             <ul className="mt-4 list-disc space-y-1 pl-5">
               {product.tags.map((tag) => (
                 <li key={tag}>{tag}</li>
@@ -53,9 +55,9 @@ export function ProductTabs({ product, reviews }: { product: Product; reviews: R
           <table className="w-full max-w-2xl text-sm">
             <tbody>
               {Object.entries(specs).map(([key, value]) => (
-                <tr key={key} className="border-b border-slate-100 dark:border-white/10">
-                  <th className="py-3 pr-4 text-left font-bold text-slate-600 dark:text-slate-400">{key}</th>
-                  <td className="py-3 text-slate-900 dark:text-white">{value}</td>
+                <tr key={key} className="border-b border-[color:var(--store-border)]">
+                  <th className="py-3 pr-4 text-left font-semibold text-[color:var(--store-text-muted)]">{key}</th>
+                  <td className="py-3 text-[color:var(--store-text)]">{value}</td>
                 </tr>
               ))}
             </tbody>
@@ -66,15 +68,15 @@ export function ProductTabs({ product, reviews }: { product: Product; reviews: R
 
         {active === "Q&A" && (
           <div className="space-y-4">
-            <p className="text-sm text-slate-600 dark:text-slate-400">Have a question? Search for answers.</p>
+            <p className="text-sm text-[color:var(--store-text-muted)]">Have a question? Search for answers.</p>
             {[
               { q: "Is this product genuine?", a: "Yes, sold by authorized sellers with invoice." },
               { q: "What is the return policy?", a: "7-30 day return depending on category. See product page." },
-              { q: "Does Prime apply?", a: product.isPrime ? "Yes, eligible for Prime FREE delivery." : "Standard delivery applies." }
+              { q: "How fast is delivery?", a: product.isPrime ? "FREE fast delivery is available on this item." : "Standard delivery applies." }
             ].map((item) => (
-              <article key={item.q} className="rounded border border-slate-200 p-4 dark:border-white/10">
-                <p className="font-bold text-slate-950 dark:text-white">Q: {item.q}</p>
-                <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">A: {item.a}</p>
+              <article key={item.q} className="rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] p-4">
+                <p className="font-semibold text-[color:var(--store-text)]">Q: {item.q}</p>
+                <p className="mt-2 text-sm text-[color:var(--store-text-muted)]">A: {item.a}</p>
               </article>
             ))}
           </div>

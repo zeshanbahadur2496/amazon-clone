@@ -1,11 +1,12 @@
 "use client";
 
 import { Edit3, Loader2, Plus, Trash2 } from "lucide-react";
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StoreSelect } from "@/components/ui/store-select";
 import { categories } from "@/lib/data";
 import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/types";
@@ -21,6 +22,11 @@ export function ProductManager({ initialProducts }: { initialProducts: Product[]
   const [products, setProducts] = useState(initialProducts);
   const [editing, setEditing] = useState<Product | null>(null);
   const [loading, setLoading] = useState(false);
+  const [category, setCategory] = useState(categories[0]);
+
+  useEffect(() => {
+    setCategory(editing?.category ?? categories[0]);
+  }, [editing]);
 
   const stats = useMemo(
     () => ({
@@ -126,11 +132,13 @@ export function ProductManager({ initialProducts }: { initialProducts: Product[]
           <input name="title" defaultValue={editing?.title} required placeholder="Title" className="h-11 rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10" />
           <input name="slug" defaultValue={editing?.slug} placeholder="Slug" className="h-11 rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10" />
           <input name="brand" defaultValue={editing?.brand} required placeholder="Brand" className="h-11 rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10" />
-          <select name="category" defaultValue={editing?.category ?? categories[0]} className="h-11 rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10">
-            {categories.map((category) => (
-              <option key={category}>{category}</option>
-            ))}
-          </select>
+          <StoreSelect
+            name="category"
+            value={category}
+            onChange={setCategory}
+            options={categories.map((item) => ({ value: item, label: item }))}
+            aria-label="Product category"
+          />
           <input name="price" type="number" defaultValue={editing?.price} required placeholder="Price" className="h-11 rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10" />
           <input name="mrp" type="number" defaultValue={editing?.mrp} required placeholder="MRP" className="h-11 rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10" />
           <input name="discount" type="number" defaultValue={editing?.discount ?? 10} required placeholder="Discount %" className="h-11 rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10" />

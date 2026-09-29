@@ -6,7 +6,6 @@ import {
   MapPin,
   Menu,
   Moon,
-  Package,
   ShoppingBag,
   Sun,
   X
@@ -14,7 +13,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { SearchBar } from "@/components/layout/search-bar";
@@ -25,10 +24,12 @@ import { categories } from "@/lib/data";
 import { MARKET_CODES, MARKETS, type MarketCode } from "@/lib/markets";
 
 export function Navbar() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
   const cartCount = useCartStore((s) => s.count());
+  const openCartPreview = useCartStore((s) => s.openPreview);
   const { pincode, city, setLocation } = useDeliveryStore();
   const { market, config, setMarket } = useMarket();
   const [mounted, setMounted] = useState(false);
@@ -43,14 +44,14 @@ export function Navbar() {
         <button
           type="button"
           onClick={() => setMenuOpen((v) => !v)}
-          className="rounded-xl p-2 text-[color:var(--store-text-muted)] transition hover:bg-indigo-500/10 hover:text-indigo-600 lg:hidden"
+          className="rounded-xl p-2 text-[color:var(--store-text-muted)] transition hover:bg-[color:var(--store-surface-muted)] hover:text-[color:var(--store-accent)] lg:hidden"
           aria-label="Open menu"
         >
           {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
 
         <Link href="/" className="group flex shrink-0 items-center gap-2 rounded-xl px-1 py-1" aria-label="NovaMart home">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 text-sm font-black text-white shadow-md">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[color:var(--store-primary)] text-sm font-black text-[color:var(--store-primary-fg)] shadow-sm ring-1 ring-[color:var(--store-border)]">
             N
           </span>
           <span className="hidden sm:block">
@@ -63,7 +64,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setLocationOpen((v) => !v)}
-            className="flex max-w-[150px] flex-col rounded-xl border border-transparent px-2 py-1 text-left transition hover:border-[color:var(--store-border)] hover:bg-indigo-500/5"
+            className="flex max-w-[150px] flex-col rounded-xl border border-transparent px-2 py-1 text-left transition hover:border-[color:var(--store-border)] hover:bg-[color:var(--store-surface-muted)]"
           >
             <span className="flex items-center gap-1 text-[11px] text-[color:var(--store-text-muted)]">
               <MapPin className="h-3 w-3" />
@@ -82,7 +83,7 @@ export function Navbar() {
                   <button
                     key={`${loc.city}-${loc.postalCode}`}
                     type="button"
-                    className="block w-full rounded-xl px-3 py-2 text-left text-sm transition hover:bg-indigo-500/10"
+                    className="block w-full rounded-xl px-3 py-2 text-left text-sm transition hover:bg-[color:var(--store-surface-muted)]"
                     onClick={() => {
                       setLocation(loc.postalCode, loc.city, market);
                       setLocationOpen(false);
@@ -111,12 +112,12 @@ export function Navbar() {
               <ChevronDown className="h-3 w-3" />
             </button>
             {marketOpen && (
-              <div className="absolute right-0 top-full z-50 mt-2 max-h-72 w-52 overflow-y-auto rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] py-1 shadow-dropdown">
+              <div className="store-scroll absolute right-0 top-full z-50 mt-2 max-h-72 w-52 rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] py-1 shadow-dropdown">
                 {MARKET_CODES.map((code: MarketCode) => (
                   <button
                     key={code}
                     type="button"
-                    className={`block w-full px-3 py-2 text-left text-sm transition hover:bg-indigo-500/10 ${code === market ? "font-bold text-indigo-600 dark:text-indigo-300" : ""}`}
+                    className={`block w-full px-3 py-2 text-left text-sm transition hover:bg-[color:var(--store-surface-muted)] ${code === market ? "font-bold text-[color:var(--store-accent)]" : ""}`}
                     onClick={() => {
                       setMarket(code);
                       setMarketOpen(false);
@@ -132,7 +133,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="rounded-xl p-2 text-[color:var(--store-text-muted)] transition hover:bg-indigo-500/10 hover:text-indigo-600"
+            className="rounded-xl p-2 text-[color:var(--store-text-muted)] transition hover:bg-[color:var(--store-surface-muted)] hover:text-[color:var(--store-accent)]"
             aria-label="Toggle theme"
           >
             {mounted && theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -141,7 +142,7 @@ export function Navbar() {
           <div className="group relative hidden lg:block">
             <Link
               href={session ? "/dashboard/profile" : "/login"}
-              className="block rounded-xl border border-transparent px-2 py-1 transition hover:border-[color:var(--store-border)] hover:bg-indigo-500/5"
+              className="block rounded-xl border border-transparent px-2 py-1 transition hover:border-[color:var(--store-border)] hover:bg-[color:var(--store-surface-muted)]"
             >
               <span className="text-[11px] text-[color:var(--store-text-muted)]">
                 Hello, {session?.user?.name?.split(" ")[0] ?? "guest"}
@@ -154,14 +155,13 @@ export function Navbar() {
             <div className="invisible absolute right-0 top-full w-52 translate-y-2 rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] p-2 opacity-0 shadow-dropdown transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
               {session ? (
                 <>
-                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-indigo-500/10" href="/dashboard/profile">Your Account</Link>
-                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-indigo-500/10" href="/dashboard/orders">Your Orders</Link>
-                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-indigo-500/10" href="/dashboard/wishlist">Wishlist</Link>
-                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-indigo-500/10" href="/prime">Prime</Link>
+                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-[color:var(--store-surface-muted)]" href="/dashboard/profile">Your Account</Link>
+                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-[color:var(--store-surface-muted)]" href="/dashboard/orders">Your Orders</Link>
+                  <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-[color:var(--store-surface-muted)]" href="/dashboard/wishlist">Wishlist</Link>
                   {session.user.role === "ADMIN" && (
-                    <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-indigo-500/10" href="/admin">Admin</Link>
+                    <Link className="block rounded-xl px-3 py-2 text-sm hover:bg-[color:var(--store-surface-muted)]" href="/admin">Admin</Link>
                   )}
-                  <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="block w-full rounded-xl px-3 py-2 text-left text-sm hover:bg-indigo-500/10">
+                  <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="block w-full rounded-xl px-3 py-2 text-left text-sm hover:bg-[color:var(--store-surface-muted)]">
                     Sign Out
                   </button>
                 </>
@@ -176,19 +176,20 @@ export function Navbar() {
             </div>
           </div>
 
-          <Link
-            href="/cart"
-            className="relative flex items-center gap-2 rounded-xl border border-transparent px-2 py-1 transition hover:border-[color:var(--store-border)] hover:bg-indigo-500/5"
+          <button
+            type="button"
+            onClick={() => (cartCount > 0 ? openCartPreview() : router.push("/cart"))}
+            className="relative flex items-center gap-2 rounded-xl border border-transparent px-2 py-1 transition hover:border-[color:var(--store-border)] hover:bg-[color:var(--store-surface-muted)]"
             aria-label={`Cart, ${cartCount} items`}
           >
             <div className="relative">
               <ShoppingBag className="h-6 w-6 text-[color:var(--store-text)]" />
-              <span className="absolute -right-2 -top-2 min-w-[18px] rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 px-1 text-center text-[10px] font-bold text-white">
+              <span className="absolute -right-2 -top-2 min-w-[18px] rounded-full bg-[color:var(--store-accent)] px-1 text-center text-[10px] font-bold text-white">
                 {cartCount}
               </span>
             </div>
             <span className="hidden pb-0.5 text-sm font-semibold text-[color:var(--store-text)] sm:inline">Cart</span>
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -214,9 +215,6 @@ export function Navbar() {
           <Link href="/search?deal=flash" className="store-pill shrink-0 font-semibold text-rose-500">
             Deals
           </Link>
-          <Link href="/prime" className="store-pill shrink-0 font-semibold text-indigo-600 dark:text-indigo-300">
-            Prime
-          </Link>
         </nav>
       </div>
 
@@ -233,7 +231,7 @@ export function Navbar() {
                   key={code}
                   type="button"
                   onClick={() => setMarket(code)}
-                  className={`rounded-full px-3 py-1 text-xs ${code === market ? "bg-gradient-to-r from-indigo-500 to-cyan-500 font-bold text-white" : "bg-indigo-500/10"}`}
+                  className={`rounded-full px-3 py-1 text-xs ${code === market ? "bg-[color:var(--store-primary)] font-bold text-[color:var(--store-primary-fg)]" : "bg-[color:var(--store-surface-muted)]"}`}
                 >
                   {MARKETS[code].flag} {MARKETS[code].code}
                 </button>
@@ -241,13 +239,13 @@ export function Navbar() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-2 text-sm">
-            <Link href="/search" className="rounded-xl bg-indigo-500/10 px-3 py-2" onClick={() => setMenuOpen(false)}>Browse</Link>
-            <Link href="/search?deal=flash" className="rounded-xl bg-indigo-500/10 px-3 py-2" onClick={() => setMenuOpen(false)}>Deals</Link>
+            <Link href="/search" className="rounded-xl bg-[color:var(--store-surface-muted)] px-3 py-2" onClick={() => setMenuOpen(false)}>Browse</Link>
+            <Link href="/search?deal=flash" className="rounded-xl bg-[color:var(--store-surface-muted)] px-3 py-2" onClick={() => setMenuOpen(false)}>Deals</Link>
             {session ? (
               <>
-                <Link href="/dashboard/profile" className="rounded-xl bg-indigo-500/10 px-3 py-2">Account</Link>
-                <Link href="/dashboard/orders" className="rounded-xl bg-indigo-500/10 px-3 py-2">Orders</Link>
-                <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="rounded-xl bg-indigo-500/10 px-3 py-2 text-left">
+                <Link href="/dashboard/profile" className="rounded-xl bg-[color:var(--store-surface-muted)] px-3 py-2">Account</Link>
+                <Link href="/dashboard/orders" className="rounded-xl bg-[color:var(--store-surface-muted)] px-3 py-2">Orders</Link>
+                <button type="button" onClick={() => signOut({ callbackUrl: "/" })} className="rounded-xl bg-[color:var(--store-surface-muted)] px-3 py-2 text-left">
                   Sign out
                 </button>
               </>
@@ -256,10 +254,6 @@ export function Navbar() {
                 Sign in
               </Link>
             )}
-            <Link href="/prime" className="flex items-center gap-2 rounded-xl bg-indigo-500/10 px-3 py-2 text-indigo-600">
-              <Package className="h-4 w-4" />
-              Prime
-            </Link>
           </div>
         </div>
       )}

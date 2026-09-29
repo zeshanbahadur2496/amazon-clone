@@ -25,7 +25,7 @@ export function ProductStrip({ title, products, href = "/search" }: ProductStrip
   return (
     <section className="relative rounded-2xl bg-[color:var(--store-surface)]">
       <div className="flex items-baseline justify-between px-5 pt-5">
-        <Link href={href} className="text-xl font-bold text-[color:var(--store-text)] transition hover:text-indigo-600 dark:hover:text-indigo-300">
+        <Link href={href} className="text-xl font-bold text-[color:var(--store-text)] transition hover:text-[color:var(--store-accent)]">
           {title}
         </Link>
       </div>

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { useCartStore } from "@/components/providers/cart-store";
 import { useWishlistStore } from "@/components/providers/wishlist-store";
+import { StoreSelect } from "@/components/ui/store-select";
 import { useMarket } from "@/hooks/use-market";
 import type { Product } from "@/types";
 
@@ -18,7 +19,6 @@ export function ProductActions({ product, compact = false }: { product: Product;
 
   function addToCart() {
     addItem(product, quantity);
-    toast.success("Added to cart", { description: `${quantity} × ${product.title}` });
   }
 
   const maxQuantity = Math.max(1, Math.min(product.stock, 10));
@@ -28,31 +28,31 @@ export function ProductActions({ product, compact = false }: { product: Product;
       {!compact && (
         <>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-300">{formatPrice(product.price)}</span>
+            <span className="text-2xl font-bold text-[color:var(--store-text)]">{formatPrice(product.price)}</span>
           </div>
-          {product.discount > 0 && <p className="mt-0.5 text-sm text-rose-500">({product.discount}% off)</p>}
+          {product.discount > 0 && <p className="mt-0.5 text-sm text-[color:var(--store-deal)]">({product.discount}% off)</p>}
 
-          <p className={`mt-3 text-sm font-semibold ${product.stock > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-500"}`}>
+          <p className={`mt-3 text-sm font-semibold ${product.stock > 0 ? "text-[color:var(--store-success)]" : "text-[color:var(--store-deal)]"}`}>
             {product.stock > 0 ? "In stock" : "Out of stock"}
           </p>
         </>
       )}
 
       {product.stock > 0 && (
-        <label className="mt-3 block">
-          <span className="text-sm text-[color:var(--store-text-muted)]">Quantity:</span>
-          <select
-            value={quantity}
-            onChange={(event) => setQuantity(Number(event.target.value))}
-            className="ml-2 h-8 rounded-lg border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-2 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20"
-          >
-            {Array.from({ length: maxQuantity }).map((_, index) => (
-              <option key={index} value={index + 1}>
-                {index + 1}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="mt-3">
+          <span className="mb-1.5 block text-sm text-[color:var(--store-text-muted)]">Quantity</span>
+          <StoreSelect
+            value={String(quantity)}
+            onChange={(next) => setQuantity(Number(next))}
+            options={Array.from({ length: maxQuantity }).map((_, index) => ({
+              value: String(index + 1),
+              label: String(index + 1)
+            }))}
+            aria-label="Quantity"
+            size="sm"
+            className="max-w-[7rem]"
+          />
+        </div>
       )}
 
       <div className="mt-4 grid gap-2">

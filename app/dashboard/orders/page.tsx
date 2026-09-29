@@ -33,9 +33,9 @@ export default async function OrdersPage() {
   if (!session?.user) {
     return (
       <DashboardShell title="Orders">
-        <div className="rounded-lg border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-white/10 dark:bg-slate-900">
-          <h2 className="text-2xl font-black tracking-normal">Sign in to view orders</h2>
-          <p className="mt-2 text-slate-600 dark:text-slate-300">Your order history, invoices, and shipping updates live here.</p>
+        <div className="store-panel p-8 text-center">
+          <h2 className="font-display text-2xl font-bold text-[color:var(--store-text)]">Sign in to view orders</h2>
+          <p className="dashboard-muted mt-2">Your order history, invoices, and shipping updates live here.</p>
           <Link href="/login?callbackUrl=/dashboard/orders" className="store-btn-primary mt-5 inline-flex h-11 items-center px-5">
             Sign in
           </Link>
@@ -49,10 +49,10 @@ export default async function OrdersPage() {
   if (orders.length === 0) {
     return (
       <DashboardShell title="Orders">
-        <div className="rounded-lg border border-slate-200 bg-white p-10 text-center shadow-sm dark:border-white/10 dark:bg-slate-900">
-          <PackageSearch className="mx-auto h-12 w-12 text-slate-400" />
-          <h2 className="mt-4 text-2xl font-black tracking-normal">No orders yet</h2>
-          <p className="mt-2 text-slate-600 dark:text-slate-300">When you place an order, it will show up here.</p>
+        <div className="store-panel p-10 text-center">
+          <PackageSearch className="mx-auto h-12 w-12 text-[color:var(--store-text-muted)]" />
+          <h2 className="font-display mt-4 text-2xl font-bold text-[color:var(--store-text)]">No orders yet</h2>
+          <p className="dashboard-muted mt-2">When you place an order, it will show up here.</p>
           <Link href="/search" className="store-btn-primary mt-5 inline-flex h-11 items-center px-5">
             Start shopping
           </Link>
@@ -67,40 +67,40 @@ export default async function OrdersPage() {
     <DashboardShell title="Orders">
       <div className="space-y-5">
         {orders.map((order: OrderView) => (
-          <article key={order.id} className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-slate-900">
+          <article key={order.id} className="store-panel overflow-hidden">
             <div className="flex justify-end px-5 pt-3">
-              <Link href={`/dashboard/orders/${order.id}`} className="text-sm font-bold text-amazon-teal hover:underline">
+              <Link href={`/dashboard/orders/${order.id}`} className="dashboard-link">
                 View order details / Track package
               </Link>
             </div>
-            <div className="grid gap-3 bg-slate-100 px-5 py-4 text-sm dark:bg-white/10 sm:grid-cols-4">
+            <div className="dashboard-strip grid gap-3 text-sm sm:grid-cols-4">
               <div>
-                <p className="text-xs font-black uppercase text-slate-500">Order placed</p>
-                <p className="font-bold">{new Date(order.createdAt).toLocaleDateString("en-IN")}</p>
+                <p className="text-xs font-bold uppercase text-[color:var(--store-text-muted)]">Order placed</p>
+                <p className="font-semibold text-[color:var(--store-text)]">{new Date(order.createdAt).toLocaleDateString("en-IN")}</p>
               </div>
               <div>
-                <p className="text-xs font-black uppercase text-slate-500">Total</p>
-                <p className="font-bold">{formatPrice(order.total)}</p>
+                <p className="text-xs font-bold uppercase text-[color:var(--store-text-muted)]">Total</p>
+                <p className="font-semibold text-[color:var(--store-text)]">{formatPrice(order.total)}</p>
               </div>
               <div>
-                <p className="text-xs font-black uppercase text-slate-500">Status</p>
-                <Badge tone={order.status === "DELIVERED" ? "success" : "prime"}>{order.status}</Badge>
+                <p className="text-xs font-bold uppercase text-[color:var(--store-text-muted)]">Status</p>
+                <Badge tone={order.status === "DELIVERED" ? "success" : "accent"}>{order.status}</Badge>
               </div>
               <div>
-                <p className="text-xs font-black uppercase text-slate-500">Order ID</p>
-                <p className="truncate font-bold">{order.id}</p>
+                <p className="text-xs font-bold uppercase text-[color:var(--store-text-muted)]">Order ID</p>
+                <p className="truncate font-semibold text-[color:var(--store-text)]">{order.id}</p>
               </div>
             </div>
-            <div className="divide-y divide-slate-200 dark:divide-white/10">
+            <div className="divide-y divide-[color:var(--store-border)]">
               {order.items.map((item: OrderView["items"][number]) => (
                 <div key={item.id} className="flex gap-4 p-5">
-                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-slate-100">
+                  <div className="store-image-frame relative h-20 w-20 shrink-0 overflow-hidden rounded-xl">
                     <Image src={item.image} alt={item.title} fill sizes="80px" className="object-cover" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-bold text-slate-950 dark:text-white">{item.title}</h3>
-                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Qty {item.quantity} • {formatPrice(item.price)}</p>
-                    <Link href="/search" className="mt-3 inline-flex text-sm font-bold text-amazon-teal hover:text-amazon-orange">
+                    <h3 className="font-semibold text-[color:var(--store-text)]">{item.title}</h3>
+                    <p className="dashboard-muted mt-1">Qty {item.quantity} • {formatPrice(item.price)}</p>
+                    <Link href="/search" className="dashboard-link mt-3 inline-flex">
                       Buy it again
                     </Link>
                   </div>

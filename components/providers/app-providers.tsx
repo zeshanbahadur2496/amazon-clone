@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 
+import { CartPreviewDrawer } from "@/components/cart/cart-preview-drawer";
 import { CartWishlistSync } from "@/components/providers/cart-wishlist-sync";
 import { MarketInit } from "@/components/providers/market-init";
 
@@ -14,7 +15,8 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
         <MarketInit />
         <CartWishlistSync />
         {children}
-        <Toaster richColors closeButton position="top-right" />
+        <CartPreviewDrawer />
+        <Toaster richColors closeButton position="top-right" theme="system" toastOptions={{ className: "store-toast" }} />
       </ThemeProvider>
     </SessionProvider>
   );

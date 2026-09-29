@@ -5,9 +5,8 @@ import { products } from "@/lib/data";
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
 const FAQ: Record<string, string> = {
-  prime: "Prime members get FREE fast delivery, exclusive deals, and early access to sales on Amazon.in.",
   return: "Most products are eligible for return within 7-30 days depending on category. Go to Your Orders to start a return.",
-  delivery: "Standard delivery is 3-5 business days. Prime members often get next-day or 2-day delivery in major cities.",
+  delivery: "Standard delivery is 3-5 business days. Many items qualify for free fast delivery in major cities.",
   payment: "We support cards, UPI, net banking, EMI, and wallets. Stripe/Razorpay/PayPal integrations are ready in checkout.",
   track: "Open Your Orders from the account menu to see live shipment tracking and delivery timeline."
 };
@@ -23,12 +22,12 @@ export async function POST(request: Request) {
     });
   }
 
-  if (last.includes("prime")) {
-    return NextResponse.json({ reply: FAQ.prime, suggestions: ["Join Prime", "Prime exclusive deals"] });
-  }
-
   if (last.includes("return") || last.includes("refund")) {
     return NextResponse.json({ reply: FAQ.return, suggestions: ["Start a return"] });
+  }
+
+  if (last.includes("delivery") || last.includes("shipping")) {
+    return NextResponse.json({ reply: FAQ.delivery, suggestions: ["Check delivery", "Today's deals"] });
   }
 
   if (last.includes("compare")) {
@@ -64,7 +63,7 @@ export async function POST(request: Request) {
     .join(", ");
 
   return NextResponse.json({
-    reply: `I can help with product recommendations, order tracking, Prime benefits, and comparisons. Try asking about: ${trending}`,
-    suggestions: ["Today's deals", "Track my order", "What is Prime?"]
+    reply: `I can help with product recommendations, order tracking, delivery, and comparisons. Try asking about: ${trending}`,
+    suggestions: ["Today's deals", "Track my order", "Best electronics"]
   });
 }

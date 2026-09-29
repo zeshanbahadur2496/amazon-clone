@@ -11,6 +11,10 @@ type CartState = {
   savedItems: CartItem[];
   couponCode: string | null;
   couponDiscount: number;
+  previewOpen: boolean;
+  previewItem: { product: Product; quantity: number } | null;
+  closePreview: () => void;
+  openPreview: () => void;
   addItem: (product: Product, quantity?: number) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -89,7 +93,20 @@ export const useCartStore = create<CartState>()(
       savedItems: [],
       couponCode: null,
       couponDiscount: 0,
+      previewOpen: false,
+      previewItem: null,
+      closePreview: () => set({ previewOpen: false }),
+      openPreview: () => {
+        if (get().items.length === 0) return;
+        set({ previewOpen: true, previewItem: null });
+      },
       addItem: (product, quantity = 1) => {
+        const showPreview = (addedQuantity: number) => {
+          set({
+            previewOpen: true,
+            previewItem: { product, quantity: addedQuantity }
+          });
+        };
         const saved = get().savedItems.find((item) => item.product.id === product.id);
         if (saved) {
           const nextQuantity = Math.min(saved.quantity + quantity, 20);
@@ -98,6 +115,7 @@ export const useCartStore = create<CartState>()(
             items: [...get().items, { product, quantity: nextQuantity }]
           });
           void syncUpsert(product.id, nextQuantity);
+          showPreview(nextQuantity);
           return;
         }
 
@@ -112,11 +130,13 @@ export const useCartStore = create<CartState>()(
             )
           });
           void syncUpsert(product.id, nextQuantity);
+          showPreview(nextQuantity);
           return;
         }
 
         set({ items: [...items, { product, quantity }] });
         void syncUpsert(product.id, quantity);
+        showPreview(quantity);
       },
       removeItem: (productId) => {
         set({

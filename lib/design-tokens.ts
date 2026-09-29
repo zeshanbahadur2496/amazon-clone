@@ -1,14 +1,14 @@
 export const storeTokens = {
   colors: {
-    primary: "#6366f1",
-    primaryHover: "#4f46e5",
-    accent: "#06b6d4",
-    deal: "#f43f5e",
-    success: "#10b981",
-    lightBg: "#f4f6fb",
-    darkBg: "#0b0f19",
+    primary: "#1c1917",
+    primaryHover: "#292524",
+    accent: "#9a3412",
+    deal: "#c2410c",
+    success: "#047857",
+    lightBg: "#f7f5f2",
+    darkBg: "#0c0a09",
     surfaceLight: "#ffffff",
-    surfaceDark: "#151b28"
+    surfaceDark: "#1c1917"
   },
   spacing: {
     navHeight: "72px",

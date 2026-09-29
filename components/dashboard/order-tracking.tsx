@@ -9,19 +9,21 @@ export function OrderTracking({ steps }: { steps: OrderTimelineStep[] }) {
         <li key={`${step.status}-${index}`} className="flex gap-3">
           <div className="flex flex-col items-center">
             {step.completed ? (
-              <Check className="h-5 w-5 text-amazon-green" />
+              <Check className="h-5 w-5 text-[color:var(--store-success)]" />
             ) : (
-              <Circle className="h-5 w-5 text-slate-300" />
+              <Circle className="h-5 w-5 text-[color:var(--store-text-muted)]" />
             )}
-            {index < steps.length - 1 && <span className="mt-1 h-full w-px bg-slate-200 dark:bg-white/10" />}
+            {index < steps.length - 1 && <span className="mt-1 h-full w-px bg-[color:var(--store-border)]" />}
           </div>
           <div className="pb-4">
-            <p className={`font-bold ${step.completed ? "text-slate-950 dark:text-white" : "text-slate-500"}`}>
+            <p
+              className={`font-semibold ${step.completed ? "text-[color:var(--store-text)]" : "text-[color:var(--store-text-muted)]"}`}
+            >
               {step.status.replaceAll("_", " ")}
             </p>
-            <p className="text-sm text-slate-600 dark:text-slate-300">{step.message}</p>
+            <p className="dashboard-muted">{step.message}</p>
             {step.createdAt && (
-              <p className="mt-1 text-xs text-slate-400">
+              <p className="mt-1 text-xs text-[color:var(--store-text-muted)]">
                 {new Date(step.createdAt).toLocaleString()}
               </p>
             )}

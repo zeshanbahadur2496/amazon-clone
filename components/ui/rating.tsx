@@ -19,15 +19,13 @@ export function Rating({
             key={index}
             className={cn(
               "h-4 w-4",
-              index + 1 <= Math.round(value) ? "fill-amber-400 text-amber-400" : "fill-slate-200 text-slate-200"
+              index + 1 <= Math.round(value) ? "fill-amber-400 text-amber-400" : "fill-[color:var(--store-border)] text-[color:var(--store-border)]"
             )}
           />
         ))}
       </div>
-      <span className="font-semibold text-slate-700 dark:text-slate-200">
-  {Number(value).toFixed(1)}
-</span>
-      {typeof count === "number" && <span className="text-amazon-teal">({compactNumber(count)})</span>}
+      <span className="font-semibold text-[color:var(--store-text)]">{Number(value).toFixed(1)}</span>
+      {typeof count === "number" && <span className="text-[color:var(--store-text-muted)]">({compactNumber(count)})</span>}
     </div>
   );
 }

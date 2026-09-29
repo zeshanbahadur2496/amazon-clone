@@ -143,6 +143,6 @@ export function buildProductStrips(products: Product[]) {
     { title: "Top deals for you", products: byDiscount.slice(0, 12), href: "/search?deal=today" },
     { title: "New in computer accessories", products: (computers.length ? computers : products).slice(0, 12), href: "/search?category=Laptops%20%26%20Computers" },
     { title: "Automotive bestsellers", products: (automotive.length ? automotive : products).slice(0, 12), href: "/search?category=Automotive" },
-    { title: "Prime picks for you", products: prime.slice(0, 12), href: "/prime" }
+    { title: "Top picks for you", products: prime.slice(0, 12), href: "/search?sort=rating" }
   ];
 }

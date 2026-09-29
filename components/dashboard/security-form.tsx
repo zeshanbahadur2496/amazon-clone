@@ -5,6 +5,9 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 
+const fieldClass =
+  "store-input h-11 w-full px-3 text-[color:var(--store-text)] placeholder:text-[color:var(--store-text-muted)]";
+
 export function SecurityForm() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -32,24 +35,30 @@ export function SecurityForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="mt-4 grid max-w-md gap-3">
-      <input
-        type="password"
-        placeholder="Current password"
-        value={currentPassword}
-        onChange={(e) => setCurrentPassword(e.target.value)}
-        className="h-10 rounded border px-3 dark:border-white/10 dark:bg-slate-950"
-        required
-      />
-      <input
-        type="password"
-        placeholder="New password"
-        minLength={6}
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        className="h-10 rounded border px-3 dark:border-white/10 dark:bg-slate-950"
-        required
-      />
+    <form onSubmit={onSubmit} className="mt-4 grid max-w-md gap-4">
+      <label>
+        <span className="dashboard-label">Current password</span>
+        <input
+          type="password"
+          placeholder="Enter current password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+          className={fieldClass}
+          required
+        />
+      </label>
+      <label>
+        <span className="dashboard-label">New password</span>
+        <input
+          type="password"
+          placeholder="At least 6 characters"
+          minLength={6}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          className={fieldClass}
+          required
+        />
+      </label>
       <Button type="submit" disabled={loading}>
         {loading ? "Updating..." : "Update password"}
       </Button>

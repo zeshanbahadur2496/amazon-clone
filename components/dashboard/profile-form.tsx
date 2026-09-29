@@ -4,6 +4,10 @@ import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const fieldClass =
+  "store-input h-11 w-full px-3 text-[color:var(--store-text)] placeholder:text-[color:var(--store-text-muted)]";
 
 export function ProfileForm({
   initialName,
@@ -42,29 +46,37 @@ export function ProfileForm({
   return (
     <form onSubmit={onSubmit} className="grid gap-4 sm:grid-cols-2">
       <label>
-        <span className="mb-1 block text-sm font-bold text-slate-700 dark:text-slate-200">Name</span>
+        <span className="mb-1.5 block text-sm font-semibold text-[color:var(--store-text)]">Name</span>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="h-11 w-full rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10"
+          className={fieldClass}
         />
       </label>
       <label>
-        <span className="mb-1 block text-sm font-bold text-slate-700 dark:text-slate-200">Email</span>
-        <input value={email} disabled className="h-11 w-full rounded-md border border-slate-200 bg-slate-100 px-3 outline-none dark:border-white/10 dark:bg-white/10" />
+        <span className="mb-1.5 block text-sm font-semibold text-[color:var(--store-text)]">Email</span>
+        <input
+          value={email}
+          disabled
+          className={cn(fieldClass, "cursor-not-allowed opacity-60")}
+        />
       </label>
       <label>
-        <span className="mb-1 block text-sm font-bold text-slate-700 dark:text-slate-200">Phone</span>
+        <span className="mb-1.5 block text-sm font-semibold text-[color:var(--store-text)]">Phone</span>
         <input
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="+1 (555) 123-4567"
-          className="h-11 w-full rounded-md border border-slate-200 bg-transparent px-3 outline-none focus:border-amazon-orange dark:border-white/10"
+          className={fieldClass}
         />
       </label>
       <label>
-        <span className="mb-1 block text-sm font-bold text-slate-700 dark:text-slate-200">Role</span>
-        <input value={role} disabled className="h-11 w-full rounded-md border border-slate-200 bg-slate-100 px-3 outline-none dark:border-white/10 dark:bg-white/10" />
+        <span className="mb-1.5 block text-sm font-semibold text-[color:var(--store-text)]">Role</span>
+        <input
+          value={role}
+          disabled
+          className={cn(fieldClass, "cursor-not-allowed opacity-60")}
+        />
       </label>
       <div className="sm:col-span-2">
         <Button type="submit" disabled={loading}>

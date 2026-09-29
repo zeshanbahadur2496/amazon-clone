@@ -39,7 +39,7 @@ function Pagination({ params, page, totalPages }: { params: SearchParams; page: 
       <Link
         href={buildPageHref(params, Math.max(1, page - 1))}
         aria-disabled={page <= 1}
-        className="rounded border border-slate-300 bg-white px-3 py-2 text-sm font-bold aria-disabled:pointer-events-none aria-disabled:opacity-40 dark:border-white/10 dark:bg-slate-900"
+        className="rounded-lg border border-[color:var(--store-border)] bg-[color:var(--store-surface)] px-3 py-2 text-sm font-bold text-[color:var(--store-text)] aria-disabled:pointer-events-none aria-disabled:opacity-40"
       >
         Previous
       </Link>
@@ -49,8 +49,8 @@ function Pagination({ params, page, totalPages }: { params: SearchParams; page: 
           href={buildPageHref(params, p)}
           className={`min-w-9 rounded border px-3 py-2 text-center text-sm font-bold ${
             p === page
-              ? "border-indigo-500 bg-gradient-to-r from-indigo-500 to-cyan-500 text-white"
-              : "border-slate-300 bg-white dark:border-white/10 dark:bg-slate-900"
+              ? "border-[color:var(--store-primary)] bg-[color:var(--store-primary)] text-[color:var(--store-primary-fg)]"
+              : "border-[color:var(--store-border)] bg-[color:var(--store-surface)] text-[color:var(--store-text)]"
           }`}
         >
           {p}
@@ -59,7 +59,7 @@ function Pagination({ params, page, totalPages }: { params: SearchParams; page: 
       <Link
         href={buildPageHref(params, Math.min(totalPages, page + 1))}
         aria-disabled={page >= totalPages}
-        className="rounded border border-slate-300 bg-white px-3 py-2 text-sm font-bold aria-disabled:pointer-events-none aria-disabled:opacity-40 dark:border-white/10 dark:bg-slate-900"
+        className="rounded-lg border border-[color:var(--store-border)] bg-[color:var(--store-surface)] px-3 py-2 text-sm font-bold text-[color:var(--store-text)] aria-disabled:pointer-events-none aria-disabled:opacity-40"
       >
         Next
       </Link>
@@ -74,26 +74,26 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   return (
     <div className="mx-auto max-w-[1500px] px-3 py-4 sm:px-4">
       <div className="mb-3 rounded-2xl border border-[color:var(--store-border)] bg-[color:var(--store-surface)] px-4 py-3 shadow-soft">
-        <p className="text-sm text-slate-600 dark:text-slate-300">
+        <p className="text-sm text-[color:var(--store-text-muted)]">
           {total > 0 ? (
             <>
               {total} result{total === 1 ? "" : "s"}
               {params.q ? (
                 <>
                   {" "}
-                  for <span className="font-bold text-slate-950 dark:text-white">&ldquo;{params.q}&rdquo;</span>
+                  for <span className="font-bold text-[color:var(--store-text)]">&ldquo;{params.q}&rdquo;</span>
                 </>
               ) : null}
               {params.category && params.category !== "All" ? (
                 <>
                   {" "}
-                  in <span className="font-bold text-slate-950 dark:text-white">{params.category}</span>
+                  in <span className="font-bold text-[color:var(--store-text)]">{params.category}</span>
                 </>
               ) : null}
               {params.deal ? (
                 <>
                   {" "}
-                  — <span className="font-bold text-amazon-orange">Deals</span>
+                  — <span className="font-bold text-[color:var(--store-accent)]">Deals</span>
                 </>
               ) : null}
             </>
@@ -116,10 +116,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           {items.length > 0 ? (
             <ProductGrid products={items} />
           ) : (
-            <div className="rounded border border-slate-200 bg-white p-10 text-center shadow-card dark:border-white/10 dark:bg-slate-900">
-              <PackageSearch className="mx-auto h-10 w-10 text-slate-400" />
-              <h2 className="mt-3 text-xl font-bold">No products found</h2>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">Try a broader search term or remove a filter.</p>
+            <div className="store-panel p-10 text-center">
+              <PackageSearch className="mx-auto h-10 w-10 text-[color:var(--store-text-muted)]" />
+              <h2 className="mt-3 text-xl font-bold text-[color:var(--store-text)]">No products found</h2>
+              <p className="mt-2 text-sm text-[color:var(--store-text-muted)]">Try a broader search term or remove a filter.</p>
             </div>
           )}
 

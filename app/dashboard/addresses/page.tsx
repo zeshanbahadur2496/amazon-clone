@@ -1,4 +1,5 @@
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 
 import { AddressManager } from "@/components/dashboard/address-manager";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
@@ -17,8 +18,11 @@ export default async function AddressesPage() {
   if (!session?.user?.id) {
     return (
       <DashboardShell title="Addresses">
-        <div className="rounded-lg border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-white/10 dark:bg-slate-900">
-          <h2 className="text-2xl font-black tracking-normal">Sign in to manage addresses</h2>
+        <div className="store-panel p-8 text-center">
+          <h2 className="font-display text-2xl font-bold text-[color:var(--store-text)]">Sign in to manage addresses</h2>
+          <Link href="/login?callbackUrl=/dashboard/addresses" className="store-btn-primary mt-5 inline-flex h-11 items-center px-5">
+            Sign in
+          </Link>
         </div>
       </DashboardShell>
     );

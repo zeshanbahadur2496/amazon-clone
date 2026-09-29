@@ -37,10 +37,12 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
         });
 
         if (!response.ok) {
-          const data = (await response.json().catch(() => null)) as { message?: string } | null;
+          const data = (await response.json().catch(() => null)) as { message?: string; issues?: Record<string, string[]> } | null;
+          const fieldError = data?.issues ? Object.values(data.issues).flat()[0] : undefined;
           throw new Error(
-            data?.message ??
-              "Unable to create account. Check that DATABASE_URL is configured on Vercel and MongoDB allows connections."
+            fieldError ??
+              data?.message ??
+              "Unable to create account. Check that DATABASE_URL is configured and MongoDB allows your IP address."
           );
         }
       }
@@ -78,7 +80,7 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
     >
       <div className="mb-6 text-center">
         <Link href="/" className="inline-flex items-center gap-1 text-3xl font-black tracking-tight">
-          <span className="text-gradient">Nova</span>
+          <span className="text-brand">Nova</span>
           <span className="text-[color:var(--store-text)]">Mart</span>
         </Link>
         <h1 className="mt-5 text-2xl font-bold tracking-tight text-[color:var(--store-text)]">
@@ -120,7 +122,7 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
         {mode === "signup" && (
           <label className="block">
             <span className="mb-1 block text-sm font-semibold text-[color:var(--store-text)]">Your name</span>
-            <span className="flex items-center gap-2 rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20">
+            <span className="flex items-center gap-2 rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-3 focus-within:border-[color:var(--store-accent)] focus-within:ring-2 focus-within:ring-[color:var(--store-focus)]">
               <UserRound className="h-4 w-4 text-[color:var(--store-text-muted)]" />
               <input name="name" required minLength={2} className="h-11 flex-1 bg-transparent outline-none" />
             </span>
@@ -129,7 +131,7 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
 
         <label className="block">
           <span className="mb-1 block text-sm font-semibold text-[color:var(--store-text)]">Email</span>
-          <span className="flex items-center gap-2 rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20">
+          <span className="flex items-center gap-2 rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-3 focus-within:border-[color:var(--store-accent)] focus-within:ring-2 focus-within:ring-[color:var(--store-focus)]">
             <Mail className="h-4 w-4 text-[color:var(--store-text-muted)]" />
             <input name="email" type="email" required className="h-11 flex-1 bg-transparent outline-none" />
           </span>
@@ -137,7 +139,7 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
 
         <label className="block">
           <span className="mb-1 block text-sm font-semibold text-[color:var(--store-text)]">Password</span>
-          <span className="flex items-center gap-2 rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-3 focus-within:border-indigo-400 focus-within:ring-2 focus-within:ring-indigo-500/20">
+          <span className="flex items-center gap-2 rounded-xl border border-[color:var(--store-border)] bg-[color:var(--store-surface-muted)] px-3 focus-within:border-[color:var(--store-accent)] focus-within:ring-2 focus-within:ring-[color:var(--store-focus)]">
             <Lock className="h-4 w-4 text-[color:var(--store-text-muted)]" />
             <input
               name="password"

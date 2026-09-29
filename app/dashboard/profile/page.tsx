@@ -16,8 +16,8 @@ export default async function ProfilePage() {
   if (!session?.user) {
     return (
       <DashboardShell title="Profile">
-        <div className="rounded-lg border border-slate-200 bg-white p-6 text-center shadow-sm dark:border-white/10 dark:bg-slate-900">
-          <h2 className="text-2xl font-black tracking-normal">Sign in to manage profile</h2>
+        <div className="store-panel p-6 text-center">
+          <h2 className="font-display text-2xl font-bold text-[color:var(--store-text)]">Sign in to manage profile</h2>
           <Link href="/login?callbackUrl=/dashboard/profile" className="store-btn-primary mt-5 inline-flex h-11 items-center px-5">
             Sign in
           </Link>
@@ -33,9 +33,9 @@ export default async function ProfilePage() {
 
   return (
     <DashboardShell title="Profile">
-      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-slate-900">
+      <div className="store-panel p-6">
         {!user?.emailVerified && (
-          <p className="mb-4 rounded border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+          <p className="mb-4 rounded-xl border border-amber-200/80 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-500/25 dark:bg-amber-500/10 dark:text-amber-100">
             Email not verified. Check your inbox or request a new link from account settings.
           </p>
         )}

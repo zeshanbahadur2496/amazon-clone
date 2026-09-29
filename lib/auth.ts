@@ -6,6 +6,8 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { z } from "zod";
 
+import { isDatabaseError, withAuthDb } from "@/lib/auth-db";
+import { isLocalAuthEnabled, verifyLocalUser } from "@/lib/local-auth-store";
 import { prisma } from "@/lib/prisma";
 
 const credentialsSchema = z.object({
@@ -47,28 +49,47 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
 
-          const user = await prisma.user.findUnique({
-            where: { email: parsed.data.email }
-          });
+          try {
+            const user = await withAuthDb(() =>
+              prisma.user.findUnique({
+                where: { email: parsed.data.email }
+              })
+            );
 
-          if (!user?.password) {
-            return null;
+            if (user?.password) {
+              const isValid = await bcrypt.compare(parsed.data.password, user.password);
+              if (isValid) {
+                return {
+                  id: user.id,
+                  name: user.name,
+                  email: user.email,
+                  image: user.image,
+                  role: user.role,
+                  isPrime: user.isPrime && (!user.primeExpiresAt || user.primeExpiresAt > new Date())
+                };
+              }
+            }
+          } catch (error) {
+            if (!isLocalAuthEnabled() || !isDatabaseError(error)) {
+              throw error;
+            }
           }
 
-          const isValid = await bcrypt.compare(parsed.data.password, user.password);
-
-          if (!isValid) {
-            return null;
+          if (isLocalAuthEnabled()) {
+            const localUser = await verifyLocalUser(parsed.data.email, parsed.data.password);
+            if (localUser) {
+              return {
+                id: localUser.id,
+                name: localUser.name,
+                email: localUser.email,
+                image: null,
+                role: localUser.role,
+                isPrime: localUser.isPrime
+              };
+            }
           }
 
-          return {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            image: user.image,
-            role: user.role,
-            isPrime: user.isPrime && (!user.primeExpiresAt || user.primeExpiresAt > new Date())
-          };
+          return null;
         } catch (error) {
           console.error("CREDENTIALS_AUTH_ERROR", error);
           return null;
